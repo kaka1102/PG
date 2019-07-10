@@ -1,0 +1,190 @@
+﻿@using Mobile_Deura.Const
+@{
+    var model = (List<ViewModelListScript>)Model;
+}
+
+
+@{
+    ViewBag.Title = "Home Page";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .loaderactive {
+        width: 100%;
+        position: absolute;
+        z-index: 10;
+        background-color: black;
+        opacity: 0.4;
+        height: 100%;
+        top: 0;
+    }
+</style>
+
+ 
+<div class="wrapper wrapper-content animated fadeInRight">
+    
+    <div id="id_page">
+        
+    <div class="row">
+
+        <div class="col-lg-10">
+            <h2>Thêm mới Script </h2>
+        </div>
+        <div class="col-lg-10">
+
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <div class="ibox-tools">
+                    </div>
+                </div>
+                <div class="ibox-content" id="content-container-add" style="overflow: hidden">
+
+                    <div class="col-md-12">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <labe>Tên Script</labe><span style="color: red;">*</span>
+                                <input id="txt-script-name" type="text" placeholder="script name" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+
+                        <div class="col-sm-8">
+                            <div class="form-group">
+                                <labe>Content</labe><span style="color: red;">*</span>
+
+                                <div class="summernote"> </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <h2> </h2>
+
+                        <button id="btn-add-script9" @Html.Raw(ViewBag.TypeAccount == 1 ? "style='display:none'" : "") class="btn btn-w-m btn-success">Add</button>
+                        <button id="btn-clear-script9" @Html.Raw(ViewBag.TypeAccount == 1 ? "style='display:none'" : "") class="btn btn-w-m btn-success">Clear</button>
+                        
+                        <div class="form-group">
+                            <p id="message4" style="width: 100%; text-align: center;"></p>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+        
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <div class="ibox-tools">
+                        </div>
+                    </div>
+                    <div class="ibox-content" id="content-container" style="overflow: hidden">
+
+                        @Html.Action("_ListScript")
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+  </div>
+
+
+
+<link href="~/Content/css/plugins/summernote/summernote-bs3.css" rel="stylesheet" />
+<link href="~/Content/css/plugins/summernote/summernote.css" rel="stylesheet" />
+<script src="~/Scripts/plugins/summernote/summernote.min.js"></script>
+<script>
+
+    $(document).ready(function () {
+
+        $('.summernote').summernote({
+            height: 200
+        });
+        BindAddContent();
+        BindAddScript();
+    });
+
+
+    function BindAddScript() {
+
+        $("#btn-clear-script9").click(function() {
+
+           
+            $(".summernote").summernote("reset");
+            $('#txt-script-name').val('');
+
+
+        });
+
+    }
+
+    function BindAddContent() {
+
+        $("#btn-add-script9").click(function () {
+
+            var contentScript = $('.summernote').summernote('code');
+            var nameScript = $('#txt-script-name').val();
+
+            var objdata = {
+                namescript: nameScript,
+                script: contentScript
+            };
+
+            console.log(objdata);
+
+            $.ajax({
+
+                type: "POST",
+                url: "/Campaign/_AddScript",
+                data: JSON.stringify(objdata) ,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+
+                    $("#message4").text(data.result);
+                    $("#message4").css("color", "red");
+                },
+                failure: function () {
+                    alert("fail");
+                }
+            });
+
+
+        });
+
+    }
+
+
+
+    function LoadPartialView(url, container) {
+
+        $.ajax({
+            url: url,
+            type: "GET",
+            dataType: "html",
+            success: function (data) {
+                container.html(data);
+            },
+            beforeSend: function () {
+                container.append($('<div class="loaderactive"><div id="loader"></div></div>'));
+            }
+        });
+
+    }
+
+
+
+</script>

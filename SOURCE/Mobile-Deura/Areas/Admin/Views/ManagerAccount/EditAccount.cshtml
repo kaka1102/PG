@@ -1,0 +1,347 @@
+﻿@{
+    var model = (User)Model;
+}
+<div class="ibox float-e-margins">
+    <div class="ibox-title">
+        <h5>Cập nhật tài khoản</h5>
+    </div>
+    <div class="ibox-content">
+        <div class="row">
+            <div class="col-sm-10 b-r">
+                <div class="form-group"><label>Username</label> <input id="txt-username" type="text" placeholder="Enter email" class="form-control" value="@(model.UserName)" disabled="disabled"></div>
+                <div class="form-group"><label>Password</label> <span style="color: red;">*</span> <input id="txt-password" type="text" placeholder="Password" class="form-control" value="@(model.Password)"></div>
+                <div class="form-group"><label>Họ và tên</label><span style="color: red;">*</span> <input id="txt-name" type="text" placeholder="Họ và tên" class="form-control" value="@(model.FullName)"></div>
+                <div class="form-group"><label>Ngày tháng năm sinh</label> <input id="txt-bird" type="text" placeholder="dd/mm/yyyy" class="form-control" value="@(model.DateOfBirth == null ? "" : model.DateOfBirth.Value.ToString("dd/M/yyyy"))"></div>
+                <div class="form-group"><label>Email</label><span style="color: red;">*</span> <input id="txt-email" type="text" placeholder="example@gmail.com" class="form-control" value="@(model.Email)"></div>
+                <div class="form-group"><label>Mã nhân viên</label><span style="color: red;">*</span> <input id="txt-phone" type="text" class="form-control" value="@(model.agent)"></div>
+
+                <div class="form-group">
+                    <label>Source</label>
+                    
+                    <span style="color: red;">*</span>
+                    <select id="txt-source" class="form-control">
+
+                        <option value="">-- Không chọn SOURCE --</option>
+                        <option value="HPG" @Html.Raw(model.source == "HPG" ? "Selected" : "")>-- Hải Phòng --</option>
+                        <option value="CTO" @Html.Raw(model.source == "CTO" ? "Selected" : "")>-- Cần Thơ --</option>
+                        <option value="HNI.PG" @Html.Raw(model.source == "HNI.PG" ? "Selected" : "")>-- Hà Nội --</option>
+                        <option value="HCM.PG" @Html.Raw(model.source == "HCM.PG" ? "Selected" : "")>--  TP HCM --</option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group" id="lst-city">
+                    @Html.Action("LoadCityCombobox", new { idSelected = model.idCity })
+                </div>
+                <div class="form-group">
+
+                    <label>Loại tài khoản : &nbsp;&nbsp; &nbsp;&nbsp; </label>
+                    <label style="margin-right: 40px">
+                        <input type="radio" class="minimal" id="isAccountUser" name="typebonus" @Html.Raw((model.LoaiTK == 2 || model.LoaiTK.ToString() == "") ? "checked='checked'" : "") value="2">
+                        &nbsp;&nbsp; Nhân viên
+                    </label>
+                    <label>
+                        <input type="radio" class="minimal" id="isAccountTeamLead" name="typebonus" @Html.Raw(model.LoaiTK == 1 ? "checked='checked'" : "") value="1">
+                        &nbsp;&nbsp; Team Lead
+                    </label>
+
+                    <label>
+                        <input type="radio" class="minimal" id="isAccountBC" name="typebonus" @Html.Raw(model.LoaiTK == 3 ? "checked='checked'" : "") value="3">
+                        &nbsp;&nbsp; Nhân Viên BC
+                    </label>
+
+
+                    @if (ViewBag.LoaiTK != 100 && ViewBag.LoaiTK != 1)
+                    {
+                        <label>
+                            <input type="radio" class="minimal" id="isAccountUserManager" name="typebonus" value="100">
+                            &nbsp;&nbsp; Quản lý
+                        </label>
+                    }
+
+                    @if (ViewBag.LoaiTK != null)
+                    {
+                        if (ViewBag.LoaiTK == 0)
+                        {
+                            <label>
+                                <input type="radio" class="minimal" id="isAccountImport" name="typebonus" @Html.Raw(model.LoaiTK == 4 ? "checked='checked'" : "") value="4">
+                                &nbsp;&nbsp; Nhân viên Import
+                            </label>
+                        }
+
+                    }
+
+                </div>
+
+                @if(model.LoaiTK != 4)
+                {
+                    <select id="cbb-team-lead" class="form-control" @Html.Raw(model.LoaiTK == 1 ? "style='display:none'" : "")>
+                        @if (ViewBag.lstTeamLead != null)
+                        {
+                            <option @Html.Raw(ViewBag.idParent == 0 ? "selected" : "") value="0">--Không chọn Team--</option>
+
+                            foreach (var item in ViewBag.lstTeamLead)
+                            {
+                                <option @Html.Raw(ViewBag.idParent == item.Id ? "selected" : "") value="@(item.Id)" data-key="@(item.idManager)">@(item.UserName)</option>
+                            }
+
+                        }
+                        else
+                        {
+                            <option value="0">Hệ thống chưa có tài khoản Team lead</option>
+                        }
+                    </select>
+
+                    <select id="cbb-group-manger" class="form-control"   @Html.Raw(model.LoaiTK == 1 ? "style='display:block'" : "style='display:none'")>
+                        @if (ViewBag.Group != null)
+                        {
+                            <option value="0">-- Chưa chọn Mã Team --</option>
+                            foreach (var item in ViewBag.Group)
+                            {                             
+                                <option @Html.Raw(item.Name == ViewBag.TeamName  ? "selected" : "") value="@(item.Name)" >@(item.Name)</option>
+                            }
+                        }
+                        else
+                        {
+                            <option value="0">Hệ thống chưa có Team nào</option>
+                        }
+                    </select>
+                    
+                }
+                
+                
+                @if (@ViewBag.LoaiTK == 100)
+                {
+                    <select id="cbb-user-manger" class="form-control" style='display:none'>
+                        <option value="@(ViewBag.Id)">@(ViewBag.UserName)</option>
+                    </select>
+                }
+                else
+                {
+
+                    if (@ViewBag.lstUserManager != null)
+                    {
+                        <select id="cbb-user-manger" class="form-control" @Html.Raw(ViewBag.loaiTK != 100 ? "style='display:none'" : "")>
+
+                            <option value="0">-- Không chọn User Manager --</option>
+                            @foreach (var item in ViewBag.lstUserManager)
+                            {
+                                <option value="@item.Id">@item.UserName</option>
+                            }
+                        </select>
+                    }
+                    else
+                    {
+                        <select id="cbb-user-manger" class="form-control" @Html.Raw(ViewBag.loaiTK != 100 ? "style='display:none'" : "")>
+                            <option value="0">Hệ thống chưa có tài khoản có User Manager</option>
+                        </select>
+                    }
+                }
+
+
+                @if (model.LoaiTK == 3 || model.LoaiTK == 4)
+                {
+                    <div style="margin-top: 20px;">
+
+                        <select id="txt-center" class="form-control m-b">
+                            <option value="" selected="" disabled="" hidden=""  >Chọn trung tâm</option>
+                            @if (ViewBag.lstCenter != null)
+                            {
+                                foreach (var item in ViewBag.lstCenter)
+                                {
+                                    <option value="@item.id" @Html.Raw(item.id == model.idCenter ? "Selected" : "")>@item.name</option>
+                                }
+                            }
+
+                        </select>
+
+                    </div>
+
+                }
+
+
+
+
+                <div class="form-group"><p id="message" style="width: 100%; text-align: center;"></p></div>
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <button id="btn-submit" class="btn btn-primary" type="button">Cập nhật</button>
+                        <button id="btn-cancel" class="btn btn-white" type="button">Quay lại</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    var isLead = 0;
+    var valueParent;
+    var idManager;
+    var checked = $("input[name='typebonus']:checked").val();
+    var _teamname; 
+
+    
+    $(function() {
+        $('input').iCheck({
+            checkboxClass: 'iradio_minimal-red',
+            radioClass: 'iradio_minimal-red'
+        });
+        BindButtonCancelClick();
+        BindButtonSubmitClick();
+        BindEventChoseRadioButton();
+    });
+
+    function BindButtonSubmitClick() {
+
+        $("#btn-submit").click(function() {
+
+            var idMg = $("#cbb-user-manger").find('option:selected').val();
+            var idParent = $("#cbb-team-lead").find('option:selected').val();
+            var _source = $("#txt-source").find('option:selected').val();
+            _teamname  = $("#cbb-group-manger").find('option:selected').val();
+                
+            if (isLead == 1) {
+
+                    idParent = 0;
+                    console.log("idMg  136 - " + idMg );
+
+                    if (idMg === undefined || idMg === null || idMg == 0) {
+                        alert("chưa chọn quản lý cho teamlead");
+                    }
+            }
+
+            // isAccountUser
+            if (checked == 2) {
+
+                idMg = $("#cbb-team-lead").find('option:selected').attr('data-key');
+                _teamname = $("#cbb-group-manger").find('option:selected').val();
+            }
+
+
+            if (@ViewBag.LoaiTK == 100 && idManager == 0) {
+
+                $("#message").text("Tài khoản teamlead chưa được có user quản lý");
+
+            } else {
+                if (typeof _source !== "undefined") {
+
+                    console.log("_teamname : " + _teamname);
+
+                            $.ajax({
+                                        type: "GET",
+                                        url: "/ManagerAccount/_EditAccount",
+                                        data: {
+                                            id: '@ViewBag.id',
+                                            username: $("#txt-username").val(),
+                                            password: $("#txt-password").val(),
+                                            confirmPassword: $("#txt-confirm-password").val(),
+                                            fullname: $("#txt-name").val(),
+                                            birth: $("#txt-bird").val(),
+                                            email: $("#txt-email").val(),
+                                            phone: $("#txt-phone").val(),
+                                            source: _source,
+                                            teamname: _teamname,
+                                            LoaiTK: $("input[type='radio']:checked").val(),
+                                            idParent: idParent,
+                                            idCity: $("#cbb-city").find('option:selected').val(),
+                                            idManager: idMg,
+                                            idCenter: $("#txt-center").find('option:selected').val()
+                                            
+                                        },
+                                        contentType: "application/json; charset=utf-8",
+                                        dataType: "json",
+                                        success: function (data) {
+
+                                            if (data.result.IsSuccess === true) {
+                                                $("#message").css("color", "darkcyan");
+                                                $("#message").text(data.result.Message);
+                                            } else {
+                                                $("#message").css("color", "red");
+                                                $("#message").text(data.result.Message);
+                                            }
+                                        },
+                                        failure: function () {
+                                            alert("fail");
+                                        }
+                                    });
+
+                        } else {
+                            $("#message").css("color", "red");
+                            $("#message").text("Chưa chọn source");
+
+                        }
+                  }              
+            }
+        );
+    }
+    function BindButtonCancelClick() {
+
+        $("#btn-cancel").click(function () {
+
+            LoadPartialView('@Url.Action("_ListAccount")', $("#content-container"));
+
+            }
+        );
+    }
+
+    function BindEventChoseRadioButton() {
+        var radioBonus = $('input[type="radio"]');
+        radioBonus.iCheck({
+            radioClass: 'iradio_minimal-red'
+        }).on('ifChecked',
+            function(event) {
+                //var value = $(this).val();
+                //if (value == "1") {
+                //    $('#cbb-team-lead').css('display', 'none');
+                //} else {
+                //    $('#cbb-team-lead').css('display', 'block');
+                //}
+
+                var value = $(this).val();
+                var name = $(this).attr("id");
+                // console.log(name);
+
+                if (value == "1") {
+  
+                    if (name == "isAccountTeamLead") {
+                        isLead = 1;
+                        $('#cbb-user-manger').css('display', 'block');
+                        $('#cbb-team-lead').css('display', 'none');
+                        $('#cbb-group-manger').css('display', 'block'); 
+
+                    } else {
+
+                        isLead = 0;
+                        $('#cbb-team-lead').css('display', 'none');
+                        $('#cbb-group-manger').css('display', 'none'); 
+                    }
+
+                } else {
+
+                    isLead = 0;
+                    $('#cbb-team-lead').css('display', 'block');
+                    $('#cbb-user-manger').css('display', 'none');
+                    $('#cbb-group-manger').css('display', 'none'); 
+
+                    if (name == "isAccountUserManager") {
+
+                        $('#cbb-user-manger').css('display', 'none');
+                        $('#cbb-team-lead').css('display', 'none');
+                        $('#cbb-group-manger').css('display', 'none'); 
+                    }
+
+                    if (value == "2") {
+
+                        console.log("test ---- " + idManager);
+                    }
+      
+                }
+
+                console.log("islead:" + isLead);
+            });
+    }
+</script>

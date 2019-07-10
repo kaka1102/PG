@@ -1,0 +1,157 @@
+﻿
+<div class="ibox float-e-margins">
+    <div class="ibox-title">
+        <h5>Thêm mới tài khoản</h5>
+    </div>
+    <div class="ibox-content">
+        <div class="row">
+
+            <div class="col-sm-10 b-r">
+
+                <div class="form-group"><labe>Tên local</labe><span style="color: red;">*</span> <input id="txt-localname" type="text" placeholder="Enter Local" class="form-control"></div>
+                         
+                <div class="form-group"><labe>Tên Thành phố</labe><span style="color: red;">*</span> 
+                                                             
+                    <select id="cbb-cityname" class="form-control">
+
+                        @if (ViewBag.lstCity != null)
+                        {
+                            <option value="0">-- Chọn thành phố --</option>
+
+                            foreach (var item in ViewBag.lstCity)
+                            {
+                                <option value="@(item.Id)">@(item.City_Name)</option>
+                            }
+                        }
+                        else
+                        {
+                            <option value="0">Hệ thống chưa có thành phố</option>
+                        }
+
+                    </select>
+                                                     
+                </div>
+
+                <div class="form-group"><labe>Tên Shortcode</labe><span style="color: red;">*</span> 
+                <br/>
+                <span style="color: red"> Chú ý : mã viết tắt liền nhau hoặc nối nhau bằng giấu " _ " </span>
+                <br/>
+                <input id="txt-shortcode" type="text" placeholder="Mã Viết Tắt" class="form-control"></div>
+
+                <div class="form-group">
+
+                    <label>Trạng thái : &nbsp;&nbsp; &nbsp;&nbsp; </label>   
+
+                    <label style="margin-right: 40px">
+
+                           <input type="radio" class="minimal" id="isActive" name="typebonus" checked="checked" value="1">
+                              &nbsp;&nbsp; Kích hoạt
+                    </label>
+
+                    <label>
+
+                        <input type="radio" class="minimal" id="isNoActive" name="typebonus" value="0">
+                              &nbsp;&nbsp; Không kích hoạt
+
+                    </label>
+                                      
+                </div>
+
+                <div class="form-group"><p id="message" style="width: 100%; text-align: center;"></p></div>
+
+                <div class="form-group">
+
+                    <div class="col-sm-12">
+
+                        <button id="btn-submit" class="btn btn-primary" type="button">Thêm mới</button>
+                        <button id="btn-cancel" class="btn btn-white" type="button">Quay lại</button>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $(function () {
+        $('input').iCheck({
+            checkboxClass: 'iradio_minimal-red',
+            radioClass: 'iradio_minimal-red'
+        });
+        BindButtonCancelClick();
+        BindButtonSubmitClick();
+        BindEventChoseRadioButton();       
+    });
+
+    function BindButtonCancelClick() {
+
+        $("#btn-cancel").click(function () {
+
+                LoadPartialView('@Url.Action("_ListLocalManager")', $("#content-container"));
+                
+            }
+        );
+    }
+
+    function BindButtonSubmitClick() {
+
+        $("#btn-submit").click(function () {
+
+                $.ajax({
+                    type: "GET",
+                    url: "/LocalManager/_AddLocal",
+                    data: {
+                        localname: $("#txt-localname").val(),
+                        cityname: $("#cbb-cityname").find('option:selected').val(),
+                        shortcode: $("#txt-shortcode").val(),
+                        isActive: $("input[type='radio']:checked").val()
+                    },
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                        success: function (data) {
+
+                            if (data.result.IsSuccess === true) {
+
+                                $("#message").css("color", "darkcyan");
+                                $("#message").text(data.result.Message);
+
+                        } else {
+                            $("#message").css("color", "red");
+                            $("#message").text(data.result.Message);
+                        }
+                 
+                  
+
+                    },
+                    failure: function () {
+                        alert("fail");
+                    }
+            });
+
+        });
+
+    };
+
+    function BindEventChoseRadioButton() {
+        var radioBonus = $('input[type="radio"]');
+        radioBonus.iCheck({
+            radioClass: 'iradio_minimal-red'
+
+        }).on('ifChecked',
+            function(event) {
+                var value = $(this).val();
+                if (value == "1") {
+                    $('#cbb-team-lead').css('display', 'none');
+                } else {
+
+                    $('#cbb-team-lead').css('display', 'block');
+                }
+         });
+    }
+
+</script>

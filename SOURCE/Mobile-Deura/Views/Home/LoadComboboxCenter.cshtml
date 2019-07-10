@@ -1,0 +1,19 @@
+﻿
+@if (Model == null)
+{
+    <select class="form-control m-b">
+    </select>
+}
+else
+{
+    <select id="txt-center" class="form-control m-b">
+        <option value="" selected="" disabled="" hidden="">Chọn trung tâm</option>
+        @foreach (var item in Model)
+        {
+            <option value="@item.name">@item.name</option>
+        }   
+
+    </select>
+
+}
+

@@ -1,0 +1,54 @@
+﻿@*@if (Model == null)
+    {
+        <select class="form-control m-b"></select>
+    }
+    else
+    {
+
+        <select id="txt-local_id"  class="form-control m-b">
+
+            <option value="" selected="" disabled="" hidden="">Chọn local</option>
+
+            @foreach (var item in Model)
+            {
+                <option value="@item.local_id">@item.name</option>
+            }
+        </select>
+
+    }*@
+
+
+<link href="~/Content/css/plugins/iCheck/flat/blue.css" rel="stylesheet" />
+<link href="~/Content/css/plugins/iCheck/all.css" rel="stylesheet" />
+<script src="~/Content/css/plugins/iCheck/icheck.min.js"></script>
+
+@if (Model == null)
+{
+    <select class="form-control m-b"></select>
+}
+else
+{
+    <div class="">
+
+        <label style="width: 100%; padding-top: 10px; padding-bottom: 10px; display: none">
+            <input  type="radio" class="minimal" id="rdbNone" name="rdbtypelocal" checked="checked" value="0">
+            &nbsp;&nbsp; None
+        </label>
+        @foreach (var item in Model)
+        {
+            <label style="width: 100%; padding-top: 10px;padding-bottom: 10px">
+                <input type="radio" class="minimal" id="@Html.Raw("rdb"+item.local_id)" name="rdbtypelocal" value="@item.local_id">
+                &nbsp;&nbsp; @item.name
+            </label>
+        }
+    </div>
+    <script>
+        $(function () {
+            $('input').iCheck({
+                checkboxClass: 'iradio_minimal-red',
+                radioClass: 'iradio_minimal-red'
+            });
+        });
+    </script>
+}
+

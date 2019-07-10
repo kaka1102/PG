@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="21a2cd9fafc043c788ba51042879b68f" Name="Diagram1">
+        <EntityTypeShape EntityType="MobilePRModel.center" Width="1.5" PointX="2.5" PointY="0.5" />
+        <EntityTypeShape EntityType="MobilePRModel.City" Width="1.5" PointX="5.25" PointY="0.75" />
+        <EntityTypeShape EntityType="MobilePRModel.Local" Width="1.5" PointX="5.25" PointY="3.125" />
+        <EntityTypeShape EntityType="MobilePRModel.Source" Width="1.5" PointX="7.375" PointY="0.75" />
+        <EntityTypeShape EntityType="MobilePRModel.Working" Width="1.5" PointX="3.125" PointY="3.125" />
+        <EntityTypeShape EntityType="MobilePRModel.User" Width="1.5" PointX="7.375" PointY="3.125" />
+        <EntityTypeShape EntityType="MobilePRModel.ScritpStore" Width="1.5" PointX="3.125" PointY="5.75" />
+        <EntityTypeShape EntityType="MobilePRModel.CampaignOption" Width="1.75" PointX="5.25" PointY="5.875" />
+        <EntityTypeShape EntityType="MobilePRModel.CampaignType" Width="1.5" PointX="9.625" PointY="3.125" />
+        <EntityTypeShape EntityType="MobilePRModel.CampaignStore" Width="2.75" PointX="1" PointY="8.25" />
+        <EntityTypeShape EntityType="MobilePRModel.pg_data" Width="1.5" PointX="0.875" PointY="3.125" />
+        <EntityTypeShape EntityType="MobilePRModel.Domain" Width="1.5" PointX="9.375" PointY="0.75" />
+        <EntityTypeShape EntityType="MobilePRModel.Campaign" Width="1.5" PointX="4.625" PointY="8.875" />
+        <EntityTypeShape EntityType="MobilePRModel.pg_data_import" Width="1.5" PointX="8.375" PointY="8.75" />
+        <EntityTypeShape EntityType="MobilePRModel.SMS_logs" Width="1.5" PointX="10.375" PointY="6.75" />
+        <EntityTypeShape EntityType="MobilePRModel.Group" Width="1.5" PointX="10.375" PointY="9.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

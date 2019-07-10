@@ -1,0 +1,143 @@
+﻿@{
+    var model = (ScritpStore)Model;
+}
+<style>
+    .loaderactive {
+        width: 100%;
+        position: absolute;
+        z-index: 10;
+        background-color: black;
+        opacity: 0.4;
+        height: 100%;
+        top: 0;
+    }
+</style>
+
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Thêm mới Script </h2>
+    </div>
+    <div class="col-lg-10">
+
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <div class="ibox-tools">
+                </div>
+            </div>
+            <div class="ibox-content" id="content-container-add" style="overflow: hidden">
+                
+                <div class="col-md-12">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <labe>Name Campain</labe><span style="color: red;">*</span>
+                            <input id="txt-script-id2" type="text"  class="form-control" value="@(model.Id)" disabled="disabled">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <labe>Name Campain</labe><span style="color: red;">*</span>
+                            <input id="txt-script-name2" type="text" class="form-control" value="@(model.NameScript)" >
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+
+                    <div class="col-sm-8">
+                        <div class="form-group">
+                            <labe>Content</labe><span style="color: red;">*</span>
+                          
+                                    <div class="summernote2">
+                                        @Html.Raw(HttpUtility.HtmlDecode(model.Script))
+                                    </div>
+
+                        </div>
+                    </div>
+
+                </div>
+ 
+
+                <div class="col-md-4">
+
+                    <h2> </h2>
+
+                    <button id="btn-add-script2" @Html.Raw(ViewBag.TypeAccount == 1 ? "style='display:none'" : "") class="btn btn-w-m btn-success">Lưu lại</button>                        
+                    <button id="btn-go-back2" @Html.Raw(ViewBag.TypeAccount == 1 ? "style='display:none'" : "") class="btn btn-w-m btn-success">Quay lại</button>
+                    
+                    <div class="form-group">
+                        <p id="message2" style="width: 100%; text-align: center;"></p>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    $(document).ready(function () {
+        $('.summernote2').summernote({
+            height: 200
+        });
+        BindAddContent();
+        BindbtnGoBack();
+        BindbtnAddEditScript();
+    });
+
+    function BindbtnGoBack() {
+
+        $("#btn-go-back2").click(function () {
+                $("#content-container-add").show();
+                LoadPartialView('@Url.Action("_ListScript")', $("#content-container"));
+            }
+        );
+    }
+
+    function BindbtnAddEditScript() {
+
+        $("#btn-add-script2").click(function () {
+
+                console.log("add script");
+                var data = $('.summernote2').summernote('code');
+                
+                var objdata = {
+                    id: $("#txt-script-id").val(),
+                    NameScript: $("#txt-script-name2").val(),
+                    Script: $.trim(data)
+                };
+
+               console.log(objdata);
+                
+                $.ajax({
+
+                    type: "POST",
+                    url: "/Campaign/EditScript",
+                    data: JSON.stringify(objdata),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+
+                        $("#message2").text(data.result);
+                        $("#message2").css("color", "red");
+                    },
+                    failure: function () {
+                        alert("fail");
+                    }
+                    });
+
+        });
+
+    }
+
+
+
+</script>

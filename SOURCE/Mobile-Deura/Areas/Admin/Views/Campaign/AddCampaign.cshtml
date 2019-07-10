@@ -1,0 +1,125 @@
+﻿ 
+<link href="~/Content/css/plugins/datapicker/datepicker3.css" rel="stylesheet" />
+
+<div class="ibox float-e-margins">
+    <div class="ibox-title">
+        <h5>Thêm mới Campaign</h5>
+    </div>
+
+    <div class="ibox-content">
+        
+        <div class="row">
+            
+            <div class="col-sm-10">
+                
+                <div class="form-group">
+
+                    <labe>Tên Campaign</labe><span style="color: red;">*</span>
+                    <input id="txt-campain-name" type="text" placeholder="Nhập Campaign" class="form-control" autocomplete="off">
+
+                </div>
+                
+                <div class="row">
+
+
+                    <div class="col-md-4">
+
+                        <div class="form-group">
+                            <labe>Kiểu campaign</labe><span style="color: red;">*</span>
+                            <select id="cbb-lsCampaign-type" class="form-control">
+                                @if (ViewBag.lsCampaigntype != null)
+                                {
+                                    <option value="0">-- Chọn kiểu campaign --</option>
+
+                                    foreach (var item in ViewBag.lsCampaigntype)
+                                    {
+                                        <option value="@(item.Id)">@(item.TypeCode)</option>
+                                    }
+                                }
+                                else
+                                {
+                                    <option value="0">Chưa có kiểu campaign nào được khai báo</option>
+                                }
+                            </select>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-md-4">
+
+                        <div class="form-group">
+                            <labe>Ngày bắt đầu</labe><span style="color: red;">*</span>
+                            <input id="txt-campain-startdate" type="text" placeholder="Ngày bắt đầu chạy" class="form-control" autocomplete="off">
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <div class="form-group">
+                            <labe>Ngày kết thúc</labe><span style="color: red;">*</span>
+                            <input id="txt-campain-enddate" type="text" placeholder="Ngày kết thúc" class="form-control" autocomplete="off">
+                        </div>
+
+                    </div>
+
+                </div>   
+ 
+            </div>
+            
+            <div class="col-sm-12">
+                <button id="btn-submit" class="btn btn-primary" type="button">Thêm mới</button>
+                <button id="btn-cancel" class="btn btn-white" type="button">Quay lại</button>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    $(function () {
+        BindAddDate();
+        BindBtnCancel();
+    });
+
+    function BindAddDate() {
+
+        $('#txt-campain-startdate').datepicker({
+            todayBtn: "linked",
+            keyboardNavigation: false,
+            forceParse: false,
+            calendarWeeks: true,
+            autoclose: true
+        });
+
+        $('#txt-campain-enddate').datepicker({
+            todayBtn: "linked",
+            keyboardNavigation: false,
+            forceParse: false,
+            calendarWeeks: true,
+            autoclose: true
+        });
+
+    }
+
+
+    function BindBtnCancel() {
+
+        $("#btn-cancel").click(function() {
+                LoadPartialView('@Url.Action("_ListCampaign")', $("#content-container"));
+            }
+        );
+
+    }
+
+    //function ButtonEditClick(self) {
+    //    var id = $(self).attr("data-id");
+    //    LoadPartialView('/Admin/ManagerAccount/EditAccount?id=' + id, $("#content-container"));
+    //}
+
+</script>

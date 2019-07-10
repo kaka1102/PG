@@ -1,0 +1,135 @@
+﻿@using Mobile_Deura.Const
+ 
+@{ 
+    var model = (List<Mobile_Deura.Models.LocalView>)Model;
+}
+
+<div class="table-responsive">
+    <table class="table table-striped table-bordered table-hover dataTables-example">
+        <thead>
+        <tr>
+
+            <th>Id</th>
+            <th>Name</th>
+            <th>City Code</th>
+            <th>City Name</th>
+            <th>Kích hoạt</th>
+            <th>Parent_</th>
+            <th>ShortCode</th>
+            <th>Tùy chỉnh</th>
+
+        </tr>
+        </thead>
+
+        <tbody>
+
+                @foreach (var item in model)
+                {
+                    <tr>
+
+                        <td> @(item.local_id) </td>
+                        <td> @(item.name) </td>
+                        <td> @(item.City_Code) </td>
+                        <td> @(item.City_Name) </td>
+                        <td>
+                            @{
+                                var a = Convert.ToInt32(item.isActive);
+                            }
+                            @Html.Raw(a == 1 ? "<span style='color:red'>Kích hoạt</span>" : "Khóa");
+
+                        </td>
+
+                        <td> @(item.parent_id) </td>
+                        <td> @(item.shortcode) </td>
+
+                        <td @Html.Raw(ViewBag.TypeAccount == 1 ? "style='display:none'" : "")>
+                            <button type="button" class="fa fa-edit" data-id="@item.local_id" onclick="ButtonEditClick(this)"> </button>
+                            <button type="button" class="fa fa-trash-o" data-id="@item.local_id" onclick="ButtonDeleteClick(this)"> </button>
+                        </td>
+
+                    </tr>
+                }
+
+        </tbody>
+        
+
+    </table>
+    
+</div>
+ 
+<script>
+
+    $(function () {
+
+        $('.dataTables-example').DataTable({
+            pageLength: 25,
+            responsive: true,
+            dom: '<"html5buttons"B>lTfgitp',
+            buttons: []
+        });
+
+
+    });
+
+    function ButtonDeleteClick(self) {
+
+        var id = $(self).attr("data-id");
+
+        BootstrapDialog.confirm({
+            title: 'CHÚ Ý',
+            message: '@SystemMessageConst.systemmessage.ConfirmAfterDelete',
+            type: BootstrapDialog.TYPE_WARNING, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+            closable: true, // <-- Default value is false
+            draggable: true, // <-- Default value is false
+            btnCancelLabel: 'CANCEL', // <-- Default value is 'Cancel',
+            btnOKLabel: 'OK', // <-- Default value is 'OK',
+            btnOKClass: 'btn-warning', // <-- If you didn't specify it, dialog type will be used,
+            callback: function (result) {
+                if (result) {
+                    var dataJson = {
+                        id: id
+                    }
+                    $.ajax({
+                        type: "GET",
+                        url: "/LocalManager/_DeleteLocal",
+                        data: dataJson,
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (data) {
+                            if (data.result.IsSuccess === true) {
+
+                                $("#message").css("color", "darkcyan");
+                                $("#message").text(data.result.Message);
+                            } else {
+                                $("#message").css("color", "red");
+                                $("#message").text(data.result.Message);
+
+                            }
+                            LoadPartialView('@Url.Action("_ListLocalManager")', $("#content-container"));
+                        },
+                        complete: function () {
+                            $(".back-loading").remove();
+                        },
+                        beforeSend: function () {
+                            var loader = $('<div class="back-loading"><img class="img-content"/></div>');
+                            $("body").prepend(loader);
+                        },
+                        failure: function () {
+                            alert("fail");
+                        }
+                    });
+                }
+            }
+        });
+
+    };
+
+    function ButtonEditClick(self) {
+        var id = $(self).attr("data-id");
+
+        LoadPartialView('/Admin/LocalManager/EditLocal?id=' + id, $("#content-container"));
+
+    }
+
+</script>
+

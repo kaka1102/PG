@@ -1,0 +1,95 @@
+﻿
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>PG - VENESA</title>
+
+    <link href="/Content/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/Content/font-awesome/css/font-awesome.css" rel="stylesheet">
+
+    <link href="/Content/css/animate.css" rel="stylesheet">
+    <link href="/Content/css/style.css" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg">
+    <div class="middle-box text-center loginscreen animated fadeInDown">
+         
+        <button id="btn-clear" class="btn btn-white" type="button">Clear Cookie</button>
+    </div>
+    <!-- Mainly scripts -->
+    <script src="/Content/js/jquery-3.1.1.min.js"></script>
+    <script src="/Content/js/bootstrap.min.js"></script>
+</body>
+ 
+
+
+<script>
+
+  
+
+    function deleteAllCookies() {
+        var cookies = document.cookie.split(";");
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i];
+            var eqPos = cookie.indexOf("=");
+            var name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+            document.cookie = name + '=;' +
+                'expires=Thu, 01-Jan-1970 00:00:01 GMT;' +
+                'path=' + '/;' +
+                'domain=' + window.location.host + ';' +
+                'secure=;';
+        }
+    }
+
+    function setCookie(name, value, expirydays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (expirydays * 24 * 60 * 60 * 1000));
+        var expires = "expires=" + d.toUTCString();
+        document.cookie = name + "=" + value + "; " + expires;
+    }
+
+    function deleteCookie(name) {
+        setCookie(name, "", -1);
+    }
+
+    function removeCookies() {
+        var res = document.cookie;
+        var multiple = res.split(";");
+        for(var i = 0; i < multiple.length; i++) {
+            var key = multiple[i].split("=");
+            document.cookie = key[0]+" =; expires = Thu, 01 Jan 1970 00:00:00 UTC";
+        }
+
+        alert("Clear thành công");
+    }
+
+    $(function () {
+
+        BindButtonClearClick();
+
+    });
+
+
+    function BindButtonClearClick() {
+
+        $("#btn-clear").click(function () {
+
+            removeCookies();
+            console.log("test");
+
+        });
+    }
+
+</script>
+</html>
+
+
+
+
+

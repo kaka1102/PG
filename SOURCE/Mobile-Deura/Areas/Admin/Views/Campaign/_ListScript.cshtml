@@ -1,0 +1,157 @@
+﻿
+@using Mobile_Deura.Const
+
+ 
+
+@{
+    var model = (List<ViewModelListScript>)Model;
+}
+
+<link href="~/Content/css/animate.css" rel="stylesheet" />
+
+ 
+
+<div class="table-responsive">
+    <table class="table table-striped table-bordered table-hover dataTables-example">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name Script</th>
+                <th>Creat At</th>
+                <th>Update At</th>
+                <th>Script</th>
+                <th>Status</th>
+                <th @Html.Raw(ViewBag.TypeAccount == 1 ? "style='display:none'" : "")>Tùy chọn</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in model)
+            {
+                <tr>
+                    <td>@(item.Id)</td>
+                    <td>
+                        @(item.NameScript)
+                    </td>
+                    <td>
+                        @(item.CreatAt)
+                    </td>
+                    <td>
+                        @(item.UpdateAt)
+                    </td>
+                    <td>
+                        @Html.Raw(HttpUtility.HtmlDecode((item.Script)))
+
+                    </td>
+
+                    <td>
+
+                        @if (Convert.ToInt16(item.isActive) == 0)
+                        {
+                                @Html.Raw("<span style='color:red'>Ngừng hoạt động</span>")
+                                ;
+                            }
+                        else if (Convert.ToInt16(item.isActive) == 1)
+                            {
+                                @Html.Raw("<span style='color:blue'>Đang hoạt động</span>")
+                                ;
+                            }
+
+                    </td>
+
+                    <td @Html.Raw(ViewBag.TypeAccount == 1 ? "style='display:none'" : "")>
+
+                        <div class="tooltip-demo1">
+                            <button type="button" class="fa fa-edit" data-id="@item.Id" onclick="ButtonEditClick(this)" data-toggle="tooltip" title="Sửa Script"> </button>
+                            @*<button type="button" class="fa fa-eye" data-id="@item.Id" onclick="ButtonViewClick(this)"> </button>*@
+                            <button type="button" class="fa fa-toggle-off" data-id="@item.Id" data-key="@item.isActive" onclick="ButtonOnOffClick(this)" data-toggle="tooltip" title="Xóa Script"> </button>
+                        </div>
+
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
+
+
+<script>
+
+    function ButtonOnOffClick(self) {
+
+        var id = $(self).attr("data-id");
+        var isActive = $(self).attr("data-key");
+
+        BootstrapDialog.confirm({
+            title: 'CHÚ Ý',
+            message: 'Bạn có chắc chắn muốn đổi trạng thái',
+            type: BootstrapDialog.TYPE_WARNING, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+            closable: true, // <-- Default value is false
+            draggable: true, // <-- Default value is false
+            btnCancelLabel: 'CANCEL', // <-- Default value is 'Cancel',
+            btnOKLabel: 'OK', // <-- Default value is 'OK',
+            btnOKClass: 'btn-warning', // <-- If you didn't specify it, dialog type will be used,
+            callback: function (result) {
+                // result will be true if button was click, while it will be false if users close the dialog directly.
+                if (result) {
+                    ActionDelete(id, isActive);
+                }
+            }
+        });
+    };
+
+
+    function ButtonEditClick(self) {
+
+        var id = $(self).attr("data-id");
+        $("#content-container-add").hide();
+
+        LoadPartialView('/Admin/Campaign/_EditScript?id=' + id, $("#content-container"));
+
+    }
+
+    function ActionDelete(id, isActive) {
+
+        if (isActive == "True") {
+            isActive = 0;
+            console.log(" is Active " + isActive);
+        } else if(isActive == "False") {
+            isActive = 1;
+            console.log(" is Active " + isActive);
+        }
+
+
+        $.ajax({
+            type: "GET",
+            url: "/campaign/_OnOffScript",
+            data: { id: id, _isActive: isActive },
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                BootstrapDialog.alert(
+                    {
+                        title: 'THÔNG BÁO',
+                        type: BootstrapDialog.TYPE_SUCCESS,
+                        message: data.result,
+                        callback: function() {
+                            LoadPartialView('@Url.Action("_ListScript")', $("#content-container"));
+                        }
+                    }
+                );
+            },
+            complete: function () {
+                $("#loadding-wraper").css("display", "none");
+            },
+            beforeSend: function () {
+                $("#loadding-wraper").css("display", "block");
+            },
+            failure: function () {
+                alert("fail");
+            }
+        });
+    };
+
+
+
+</script>

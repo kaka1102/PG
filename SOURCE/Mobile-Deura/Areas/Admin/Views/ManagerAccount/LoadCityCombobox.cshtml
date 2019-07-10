@@ -1,0 +1,19 @@
+﻿
+@if (Model == null)
+{
+    <select class="form-control m-b"></select>
+}
+else
+{
+    <label>Thành phố : </label><span style="color: red;">*</span>
+
+    <select id="cbb-city" class="form-control m-b">
+        <option value="0" selected="" disabled="" hidden="">Chọn thành phố</option>
+        @foreach (var item in Model)
+        {
+            <option @Html.Raw(ViewBag.idSelected == item.Id ? "selected" : "") value="@item.Id">@item.City_Name</option>
+        }
+    </select>
+}
+
+

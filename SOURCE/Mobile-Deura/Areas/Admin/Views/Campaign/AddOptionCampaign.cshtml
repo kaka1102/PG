@@ -1,0 +1,386 @@
+﻿
+<link href="~/Content/css/plugins/multiple-select/bootstrap-multiselect.css" rel="stylesheet" />
+<script src="~/Scripts/plugins/multiple-select/bootstrap-multiselect.js"></script>
+<script src="~/Scripts/plugins/store/lokijs.min.js"></script>
+
+
+<div class="ibox float-e-margins">
+    <div class="ibox-title">
+        <h5>Cấu hình Campaign</h5>
+    </div>
+
+    <div class="ibox-content">
+        <div class="row">
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label>Danh sách Campaign</label><span style="color: red;">*</span>
+
+                    <select id="cbb-lsCampaign" class="form-control">
+                        @if (ViewBag.lsCampaign != null)
+                        {
+                            if (Enumerable.Count(ViewBag.lsCampaign) > 0)
+                            {
+                                <option value="0">-- Chọn campaign --</option>
+
+                                foreach (var item in ViewBag.lsCampaign)
+                                {
+                                    <option value="@(item.Id)" data-key="@(item.Type)">@(item.Name)</option>
+                                }
+                            }
+                            else
+                            {
+                                <option value="0">Không có Campaign nào chưa xử dụng, vui lòng tạo thêm campaign</option>
+                            }
+
+                        }
+                        else
+                        {
+                            <option value="0">Chưa có campaign nào khai báo</option>
+                        }
+                    </select>
+
+                </div>
+            </div>
+
+
+            <div class="col-sm-6">
+
+                <div class="form-group">
+                    <label>Danh sách Script</label><span style="color: red"></span>
+                    <select id="cbb-isScript" class="form-control">
+
+                        @if (ViewBag.isScript != null)
+                        {
+                            foreach (var item in ViewBag.isScript)
+                            {
+                                <option value="@(item.Id)">@(item.NameScript)</option>
+                            }
+
+                        }
+
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+
+                <div class="form-group" id="select-user-campaign">
+                    <label>Danh sách nhân viên cho campaign</label><span style="color: red;">*</span>
+                    <select id="example-enableFiltering-includeSelectAllOption" multiple="multiple">
+                        @if (ViewBag.User != null)
+                        {
+                            foreach (var item in ViewBag.User)
+                            {
+                                <option value="@(item.Id)" data-key="@(item.UserName)">@(item.agent) @(item.UserName)</option>
+                            }
+
+                        }
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="col-sm-6">
+
+                <div class="form-group" id="select-center-campaign">
+                    <label>Danh sách trung tâm</label><span style="color: red;">*</span>
+                    <select id="example-enableFiltering-includeSelectAllOption2" multiple="multiple">
+                        @if (ViewBag.lsCenter != null)
+                        {
+                            foreach (var item in ViewBag.lsCenter)
+                            {
+                                <option value="@(item.id)" data-key="@(item.name)">@(item.name)</option>
+                            }
+
+                        }
+                    </select>
+                </div>
+
+
+            </div>
+
+            
+
+            <div class="col-sm-6" id="domain-list" style="display: none">
+
+                <div class="form-group" id="select-center-campaign">
+                    <label>Domain </label><span style="color: red;">*</span>
+                    <select id="example-enableFiltering-includeSelectAllOption3" multiple="multiple">
+                        @if (ViewBag.lsDomainType != null)
+                        {
+                            foreach (var item in ViewBag.lsDomainType)
+                            {
+                                 <option value="@(item.Id)" data-key="@(item.name)">@(item.name)</option>
+                            }
+
+                        }
+                    </select>
+                </div>
+
+            </div>
+
+
+
+        </div>
+        
+        
+  
+        <div class="row">
+            
+            <div class="form-group">
+                <p id="message" style="width: 100%; text-align: center;"></p>
+            </div>
+
+            <div class="col-sm-12">
+                <button id="btn-submit" class="btn btn-primary" type="button">Thêm mới</button>
+                <button id="btn-cancel" class="btn btn-white" type="button">Quay lại</button>
+            </div>
+
+        </div>
+        
+    </div>
+</div>
+
+<script type="text/javascript">
+    
+    var db = new loki('Usser');
+    var db2 = new loki('Center');
+    var users = db.addCollection('users', { indices: ['Id'] });
+    var centers = db.addCollection('centers', { indices: ['Id'] });
+    var domains = db.addCollection('domains', { indices: ['Id'] });
+
+    users.clear();
+    centers.clear();
+    domains.clear();
+
+
+    var status = 3;
+
+    $(document).ready(function () {
+        BindMutiSelect();
+        BindBtnCancel();
+        BindSubmit();
+    });
+
+    $('#cbb-lsCampaign').change(function () {
+
+        var data = $("#cbb-lsCampaign").find('option:selected').attr('data-key');  
+        console.log("data : " + data);
+
+        if (data == 2) {
+            status = 0;
+            $("#select-user-campaign").hide();
+            $("#select-center-campaign").show();
+            $("#domain-list").hide();
+
+        } else if (data == 1) {
+            status = 1;
+            $("#select-user-campaign").show();
+            $("#select-center-campaign").hide();
+            $("#domain-list").hide();
+        } else if (data == 3)
+        {
+            status = 3;
+            $("#select-user-campaign").hide();
+            $("#select-center-campaign").hide();
+            $("#domain-list").hide();
+        }
+        else if (data == 4)
+        {
+            status = 4
+            $("#select-user-campaign").hide();
+            $("#select-center-campaign").hide();
+            $("#domain-list").show();
+        }
+        else {
+
+            $("#select-user-campaign").show();
+            $("#select-center-campaign").show();
+            $("#domain-list").hide();
+        }
+    });
+
+    function BindSubmit() {
+    
+        $("#btn-submit").click(function () {
+
+            var obj = users.chain().data({ removeMeta: true });
+            var obj2 = centers.chain().data({ removeMeta: true });
+            var obj3 = domains.chain().data({ removeMeta: true });
+
+            var objdata = { data: JSON.stringify(obj), compaign_id: $("#cbb-lsCampaign").find('option:selected').val(), script_id: $("#cbb-isScript").find('option:selected').val() };
+            var objdata2 = { data: JSON.stringify(obj2), compaign_id: $("#cbb-lsCampaign").find('option:selected').val(), script_id: $("#cbb-isScript").find('option:selected').val() };
+            var objdata3 = { compaign_id: $("#cbb-lsCampaign").find('option:selected').val(), script_id: $("#cbb-isScript").find('option:selected').val() };
+            var objdata4 = { data: JSON.stringify(obj3), compaign_id: $("#cbb-lsCampaign").find('option:selected').val(), script_id: $("#cbb-isScript").find('option:selected').val() };
+
+            //console.log($("#cbb-lsCampaign").find('option:selected').val());
+
+            //console.log(users.chain().data());
+            //console.log(JSON.stringify(obj));
+            //console.log(JSON.stringify(centers));
+
+            console.log(JSON.stringify(domains));
+
+            if (status == 0) {              
+
+                $.ajax({
+                    type: "GET",
+                    url: "/Campaign/_AddOptionCampaignCenter",
+                    data: objdata2,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                        // console.log(data);
+                        $("#message").text(data.result);
+                        $("#message").css("color", "red");
+                    },
+                    failure: function () {
+                        alert("fail");
+                    }
+                });
+
+            }
+            else if (status == 1) {
+
+                console.log("add user");
+                $.ajax({
+                    type: "GET",
+                    url: "/Campaign/_AddOptionCampaign",
+                    data: objdata,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                        // console.log(data);
+                        $("#message").text(data.result);
+                        $("#message").css("color", "red");
+                    },
+                    failure: function () {
+                        alert("fail");
+                    }
+                });
+
+            }
+            else if (status == 3)
+            {
+                $.ajax({
+                    type: "GET",
+                    url: "/Campaign/_AddOptionCampaignFacebook",
+                    data: objdata3,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                        // console.log(data);
+                        $("#message").text(data.result);
+                        $("#message").css("color", "red");
+                    },
+                    failure: function () {
+                        alert("fail");
+                    }
+                });
+            }
+            else if (status == 4)
+            {
+                // PG SHOP
+                $.ajax({
+                    type: "GET",
+                    url: "/Campaign/_AddOptionCampaignPGShop",
+                    data: objdata4,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                        // console.log(data);
+                        $("#message").text(data.result);
+                        $("#message").css("color", "red");
+                    },
+                    failure: function () {
+                        alert("fail");
+                    }
+                });
+
+            }
+            else {
+
+                $("#message").text("chưa chọn campaign");
+                $("#message").css("color", "red");
+
+            }
+
+        });
+
+    }
+
+    function BindBtnCancel() {
+
+        $("#btn-cancel").click(function() {
+            LoadPartialView('@Url.Action("_ListOptionCampaign")', $("#content-container"));
+        });
+    }
+
+    function BindMutiSelect() {
+
+        $('#example-enableFiltering-includeSelectAllOption').multiselect({
+
+            includeSelectAllOption: false,
+            enableFiltering: true,        
+            maxHeight: 300,
+            buttonWidth: '650px',
+            onChange: function(option, checked, select) {
+                // alert('Changed option ' + $(option).val() + '.');         
+                if (checked) {
+                    console.log('Changed option checked ' + $(option).val() + '---' + $(option).attr('data-key'));
+                    users.insert({ name: $(option).attr('data-key'), Id: $(option).val() });
+                } else {
+                    console.log('Changed option unchecked ' + $(option).val() + '.');
+                    users.chain().find({ Id: $(option).val() }).remove();     
+                }
+                //  console.log(users.where(function (obj){ return obj.Id > 1 }));
+            },
+
+        });
+
+
+        $('#example-enableFiltering-includeSelectAllOption2').multiselect({
+
+            includeSelectAllOption: false,
+            enableFiltering: true,
+            maxHeight: 300,
+            buttonWidth: '650px',
+            onChange: function (option, checked, select) {
+                // alert('Changed option ' + $(option).val() + '.');         
+                if (checked) {
+                    console.log('Changed option checked ' + $(option).val() + '---' + $(option).attr('data-key'));
+                    centers.insert({ name: $(option).attr('data-key'), Id: $(option).val() });
+                } else {
+                    console.log('Changed option unchecked ' + $(option).val() + '.');
+                    centers.chain().find({ Id: $(option).val() }).remove();
+                }
+                //  console.log(users.where(function (obj){ return obj.Id > 1 }));
+            },
+
+        });
+
+
+        $('#example-enableFiltering-includeSelectAllOption3').multiselect({
+
+            includeSelectAllOption: false,
+            enableFiltering: true,
+            maxHeight: 300,
+            buttonWidth: '650px',
+            onChange: function (option, checked, select) {
+                // alert('Changed option ' + $(option).val() + '.');         
+                if (checked) {
+                    console.log('Changed option checked ' + $(option).val() + '---' + $(option).attr('data-key'));
+                    domains.insert({ name: $(option).attr('data-key'), Id: $(option).val() });
+                } else {
+                    console.log('Changed option unchecked ' + $(option).val() + '.');
+                    domains.chain().find({ Id: $(option).val() }).remove();
+                }
+                //  console.log(users.where(function (obj){ return obj.Id > 1 }));
+            },
+
+        });
+    }
+     
+
+</script>

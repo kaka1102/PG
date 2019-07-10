@@ -1,0 +1,862 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="MobilePRModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Campaign">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="255" />
+          <Property Name="Type" Type="int" Nullable="false" />
+          <Property Name="StartTime" Type="datetime" />
+          <Property Name="EndTime" Type="datetime" />
+          <Property Name="NumberContact" Type="int" />
+          <Property Name="Budgets" Type="int" />
+          <Property Name="isActive" Type="bit" Nullable="false" />
+          <Property Name="CampaignCode" Type="nvarchar" MaxLength="255" />
+          <Property Name="Domain" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="CampaignOption">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Local_Id" Type="int" />
+          <Property Name="City_Id" Type="int" />
+          <Property Name="Campaign_Id" Type="int" />
+          <Property Name="Script_id" Type="int" />
+          <Property Name="CreatAt" Type="datetime" />
+          <Property Name="UpdateAt" Type="datetime" />
+          <Property Name="Code" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="CampaignStore">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Campaign_Id" Type="int" />
+          <Property Name="User_Id" Type="int" />
+          <Property Name="Campaign_Op_Code" Type="nvarchar" MaxLength="255" />
+          <Property Name="Center_Id" Type="int" />
+          <Property Name="CampaignCode" Type="nvarchar" MaxLength="255" />
+          <Property Name="DomainSub" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="CampaignType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="500" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="TypeCode" Type="nvarchar" MaxLength="25" />
+          <Property Name="UpdateAt" Type="datetime" />
+          <Property Name="CreateAt" Type="datetime" />
+        </EntityType>
+        <EntityType Name="center">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="100" />
+          <Property Name="idCity" Type="int" />
+          <Property Name="IdCenCs2" Type="int" />
+          <Property Name="ShortName" Type="nvarchar" MaxLength="50" />
+          <Property Name="EnglishName" Type="nvarchar" MaxLength="50" />
+          <Property Name="IdCenSale" Type="int" />
+        </EntityType>
+        <EntityType Name="City">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="City_Code" Type="varchar" MaxLength="50" />
+          <Property Name="City_Name" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Domain">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="200" />
+        </EntityType>
+        <EntityType Name="Group">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="255" />
+          <Property Name="idCity" Type="int" />
+        </EntityType>
+        <EntityType Name="Local">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="local_id" Type="int" />
+          <Property Name="name" Type="nvarchar" MaxLength="50" />
+          <Property Name="city_id" Type="varchar" MaxLength="50" />
+          <Property Name="isActive" Type="bit" />
+          <Property Name="parent_id" Type="varchar" MaxLength="50" />
+          <Property Name="shortcode" Type="varchar" MaxLength="50" />
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <EntityType Name="pg_data">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="mobile" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="address" Type="nvarchar" MaxLength="200" />
+          <Property Name="center" Type="nvarchar" MaxLength="200" />
+          <Property Name="note" Type="nvarchar" MaxLength="200" />
+          <Property Name="created_date" Type="datetime" />
+          <Property Name="created_by" Type="nvarchar" MaxLength="100" />
+          <Property Name="agent" Type="nvarchar" MaxLength="15" />
+          <Property Name="sent_log" Type="nvarchar" MaxLength="250" />
+          <Property Name="local_id" Type="int" />
+          <Property Name="isCampaign" Type="bit" Nullable="false" />
+          <Property Name="id_cs" Type="int" />
+          <Property Name="id_campaign" Type="int" />
+          <Property Name="id_script" Type="int" />
+        </EntityType>
+        <EntityType Name="pg_data_import">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="255" />
+          <Property Name="address" Type="nvarchar" MaxLength="255" />
+          <Property Name="mobile" Type="nvarchar" MaxLength="255" />
+          <Property Name="center" Type="nvarchar" MaxLength="50" />
+          <Property Name="created_at" Type="datetime" />
+          <Property Name="Sent_log" Type="nvarchar" MaxLength="125" />
+          <Property Name="CampaignCode" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="ScritpStore">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Script" Type="nvarchar(max)" />
+          <Property Name="CreatAt" Type="datetime" />
+          <Property Name="UpdateAt" Type="datetime" />
+          <Property Name="NameScript" Type="nvarchar" MaxLength="50" />
+          <Property Name="isActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SMS_logs">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Mobile" Type="nvarchar" MaxLength="50" />
+          <Property Name="Name" Type="nvarchar" MaxLength="500" />
+          <Property Name="Content" Type="nvarchar" MaxLength="500" />
+          <Property Name="Status" Type="nvarchar" MaxLength="550" />
+          <Property Name="Created_At" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Source">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="Description" Type="nvarchar" MaxLength="128" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="100" />
+          <Property Name="Password" Type="nvarchar" MaxLength="100" />
+          <Property Name="FullName" Type="nvarchar" MaxLength="100" />
+          <Property Name="DateOfBirth" Type="datetime" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" />
+          <Property Name="EmailSignature" Type="nvarchar" MaxLength="500" />
+          <Property Name="agent" Type="nvarchar" MaxLength="15" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="DateCreated" Type="datetime" />
+          <Property Name="DateModify" Type="datetime" />
+          <Property Name="isAdmin" Type="bit" />
+          <Property Name="source" Type="nvarchar" MaxLength="20" />
+          <Property Name="LoaiTK" Type="int" />
+          <Property Name="idParent" Type="int" />
+          <Property Name="idCity" Type="int" />
+          <Property Name="idManager" Type="int" />
+          <Property Name="idWork" Type="int" />
+          <Property Name="idGroup" Type="int" Nullable="false" />
+          <Property Name="idCenter" Type="int" />
+          <Property Name="TeamName" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Working">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="WorkName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Descriptions" Type="nvarchar" MaxLength="255" />
+          <Property Name="ShortName" Type="varchar" MaxLength="50" />
+          <Property Name="CreateAt" Type="datetime" />
+          <Property Name="UpdateAt" Type="datetime" />
+        </EntityType>
+        <Function Name="Data_Manager_PageList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="search" Type="nvarchar" Mode="In" />
+          <Parameter Name="currPage" Type="int" Mode="In" />
+          <Parameter Name="recodperpage" Type="int" Mode="In" />
+          <Parameter Name="totalCount" Type="int" Mode="InOut" />
+        </Function>
+        <Function Name="Data_Manager_PageList_By_City" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idCity" Type="int" Mode="In" />
+          <Parameter Name="search" Type="nvarchar" Mode="In" />
+          <Parameter Name="currPage" Type="int" Mode="In" />
+          <Parameter Name="recodperpage" Type="int" Mode="In" />
+          <Parameter Name="totalCount" Type="int" Mode="InOut" />
+        </Function>
+        <Function Name="Data_Manager_PageList_By_TeamLead" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="id_teamlead" Type="int" Mode="In" />
+          <Parameter Name="search" Type="nvarchar" Mode="In" />
+          <Parameter Name="currPage" Type="int" Mode="In" />
+          <Parameter Name="recodperpage" Type="int" Mode="In" />
+          <Parameter Name="totalCount" Type="int" Mode="InOut" />
+        </Function>
+        <EntityContainer Name="MobilePRModelStoreContainer">
+          <EntitySet Name="Campaign" EntityType="Self.Campaign" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CampaignOption" EntityType="Self.CampaignOption" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CampaignStore" EntityType="Self.CampaignStore" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CampaignType" EntityType="Self.CampaignType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="center" EntityType="Self.center" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="City" EntityType="Self.City" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Domain" EntityType="Self.Domain" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Group" EntityType="Self.Group" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Local" EntityType="Self.Local" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="pg_data" EntityType="Self.pg_data" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="pg_data_import" EntityType="Self.pg_data_import" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ScritpStore" EntityType="Self.ScritpStore" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SMS_logs" EntityType="Self.SMS_logs" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Source" EntityType="Self.Source" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Working" EntityType="Self.Working" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MobilePRModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="MobilePREntities" annotation:LazyLoadingEnabled="true">
+          <FunctionImport Name="Data_Manager_PageList" ReturnType="Collection(MobilePRModel.Data_Manager_PageList_Result)">
+            <Parameter Name="search" Mode="In" Type="String" />
+            <Parameter Name="currPage" Mode="In" Type="Int32" />
+            <Parameter Name="recodperpage" Mode="In" Type="Int32" />
+            <Parameter Name="totalCount" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="center" EntityType="MobilePRModel.center" />
+          <FunctionImport Name="Data_Manager_PageList_By_TeamLead" ReturnType="Collection(MobilePRModel.Data_Manager_PageList_By_TeamLead_Result)">
+            <Parameter Name="id_teamlead" Mode="In" Type="Int32" />
+            <Parameter Name="search" Mode="In" Type="String" />
+            <Parameter Name="currPage" Mode="In" Type="Int32" />
+            <Parameter Name="recodperpage" Mode="In" Type="Int32" />
+            <Parameter Name="totalCount" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="City" EntityType="MobilePRModel.City" />
+          <EntitySet Name="Local" EntityType="MobilePRModel.Local" />
+          <EntitySet Name="Source" EntityType="MobilePRModel.Source" />
+          <FunctionImport Name="Data_Manager_PageList_By_TeamLead2" ReturnType="Collection(MobilePRModel.Data_Manager_PageList_By_TeamLead2_Result)">
+            <Parameter Name="id_teamlead" Mode="In" Type="Int32" />
+            <Parameter Name="search" Mode="In" Type="String" />
+            <Parameter Name="currPage" Mode="In" Type="Int32" />
+            <Parameter Name="recodperpage" Mode="In" Type="Int32" />
+            <Parameter Name="totalCount" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="Working" EntityType="MobilePRModel.Working" />
+          <EntitySet Name="User" EntityType="MobilePRModel.User" />
+          <EntitySet Name="ScritpStore" EntityType="MobilePRModel.ScritpStore" />
+          <EntitySet Name="CampaignOption" EntityType="MobilePRModel.CampaignOption" />
+          <EntitySet Name="CampaignType" EntityType="MobilePRModel.CampaignType" />
+          <EntitySet Name="CampaignStore" EntityType="MobilePRModel.CampaignStore" />
+          <EntitySet Name="pg_data" EntityType="MobilePRModel.pg_data" />
+          <FunctionImport Name="Data_Manager_PageList_By_City" ReturnType="Collection(MobilePRModel.Data_Manager_PageList_By_City_Result)">
+            <Parameter Name="idCity" Mode="In" Type="Int32" />
+            <Parameter Name="search" Mode="In" Type="String" />
+            <Parameter Name="currPage" Mode="In" Type="Int32" />
+            <Parameter Name="recodperpage" Mode="In" Type="Int32" />
+            <Parameter Name="totalCount" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <EntitySet Name="Domain" EntityType="MobilePRModel.Domain" />
+          <EntitySet Name="Campaign" EntityType="MobilePRModel.Campaign" />
+          <EntitySet Name="pg_data_import" EntityType="MobilePRModel.pg_data_import" />
+          <EntitySet Name="SMS_logs" EntityType="MobilePRModel.SMS_logs" />
+          <EntitySet Name="Group" EntityType="MobilePRModel.Group" />
+        </EntityContainer>
+        <ComplexType Name="Data_Manager_PageList_Result">
+          <Property Type="Int64" Name="RowNum" Nullable="true" />
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="name" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="mobile" Nullable="false" MaxLength="11" />
+          <Property Type="String" Name="address" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="center" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="note" Nullable="true" MaxLength="200" />
+          <Property Type="DateTime" Name="created_date" Nullable="true" Precision="23" />
+          <Property Type="String" Name="created_by" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="agent" Nullable="true" MaxLength="15" />
+        </ComplexType>
+        <EntityType Name="center">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="idCity" Type="Int32" />
+          <Property Name="IdCenCs2" Type="Int32" />
+          <Property Name="ShortName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EnglishName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IdCenSale" Type="Int32" />
+        </EntityType>
+        <ComplexType Name="Data_Manager_PageList_By_TeamLead_Result">
+          <Property Type="Int64" Name="RowNum" Nullable="true" />
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="name" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="mobile" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="address" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="center" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="note" Nullable="true" MaxLength="200" />
+          <Property Type="DateTime" Name="created_date" Nullable="true" Precision="23" />
+          <Property Type="String" Name="created_by" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="agent" Nullable="true" MaxLength="15" />
+          <Property Type="String" Name="sent_log" Nullable="true" MaxLength="250" />
+          <Property Type="Boolean" Name="isCampaign" Nullable="false" />
+          <Property Type="String" Name="source" Nullable="true" MaxLength="20" />
+          <Property Type="Int32" Name="local_id" Nullable="true" />
+          <Property Type="Int32" Name="id_cs" Nullable="true" />
+          <Property Type="Int32" Name="id_campaign" Nullable="true" />
+          <Property Type="Int32" Name="id_script" Nullable="true" />
+        </ComplexType>
+        <EntityType Name="City">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="City_Code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="City_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Local">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="local_id" Type="Int32" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="city_id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="isActive" Type="Boolean" />
+          <Property Name="parent_id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="shortcode" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+        </EntityType>
+        <EntityType Name="Source">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <ComplexType Name="Data_Manager_PageList_By_TeamLead2_Result">
+          <Property Type="Int64" Name="RowNum" Nullable="true" />
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="name" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="mobile" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="address" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="center" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="note" Nullable="true" MaxLength="200" />
+          <Property Type="DateTime" Name="created_date" Nullable="true" Precision="23" />
+          <Property Type="String" Name="created_by" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="agent" Nullable="true" MaxLength="15" />
+          <Property Type="String" Name="sent_log" Nullable="true" MaxLength="250" />
+          <Property Type="Int32" Name="local_id" Nullable="true" />
+          <Property Type="Boolean" Name="isCampaign" Nullable="true" />
+        </ComplexType>
+        <EntityType Name="Working">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="WorkName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Descriptions" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="ShortName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreateAt" Type="DateTime" Precision="3" />
+          <Property Name="UpdateAt" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="FullName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DateOfBirth" Type="DateTime" Precision="3" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="EmailSignature" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="agent" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="DateCreated" Type="DateTime" Precision="3" />
+          <Property Name="DateModify" Type="DateTime" Precision="3" />
+          <Property Name="isAdmin" Type="Boolean" />
+          <Property Name="source" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="LoaiTK" Type="Int32" />
+          <Property Name="idParent" Type="Int32" />
+          <Property Name="idCity" Type="Int32" />
+          <Property Name="idManager" Type="Int32" />
+          <Property Name="idWork" Type="Int32" />
+          <Property Name="idGroup" Type="Int32" Nullable="false" />
+          <Property Name="idCenter" Type="Int32" />
+          <Property Name="TeamName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ScritpStore">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Script" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatAt" Type="DateTime" Precision="3" />
+          <Property Name="UpdateAt" Type="DateTime" Precision="3" />
+          <Property Name="NameScript" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="isActive" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CampaignOption">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Local_Id" Type="Int32" />
+          <Property Name="City_Id" Type="Int32" />
+          <Property Name="Campaign_Id" Type="Int32" />
+          <Property Name="Script_id" Type="Int32" />
+          <Property Name="CreatAt" Type="DateTime" Precision="3" />
+          <Property Name="UpdateAt" Type="DateTime" Precision="3" />
+          <Property Name="Code" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="CampaignType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="TypeCode" Type="String" MaxLength="25" FixedLength="false" Unicode="true" />
+          <Property Name="UpdateAt" Type="DateTime" Precision="3" />
+          <Property Name="CreateAt" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="CampaignStore">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Campaign_Id" Type="Int32" />
+          <Property Name="User_Id" Type="Int32" />
+          <Property Name="Campaign_Op_Code" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Center_Id" Type="Int32" />
+          <Property Name="CampaignCode" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="DomainSub" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="pg_data">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="mobile" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="address" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="center" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="note" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="created_date" Type="DateTime" Precision="3" />
+          <Property Name="created_by" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="agent" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="sent_log" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="local_id" Type="Int32" />
+          <Property Name="isCampaign" Type="Boolean" Nullable="false" />
+          <Property Name="id_cs" Type="Int32" />
+          <Property Name="id_campaign" Type="Int32" />
+          <Property Name="id_script" Type="Int32" />
+        </EntityType>
+        <ComplexType Name="Data_Manager_PageList_By_City_Result">
+          <Property Type="Int64" Name="RowNum" Nullable="true" />
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="name" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="mobile" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="address" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="center" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="note" Nullable="true" MaxLength="200" />
+          <Property Type="DateTime" Name="created_date" Nullable="true" Precision="23" />
+          <Property Type="String" Name="created_by" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="agent" Nullable="true" MaxLength="15" />
+          <Property Type="String" Name="sent_log" Nullable="true" MaxLength="250" />
+          <Property Type="Int32" Name="local_id" Nullable="true" />
+          <Property Type="Boolean" Name="isCampaign" Nullable="false" />
+          <Property Type="Int32" Name="id_cs" Nullable="true" />
+          <Property Type="Int32" Name="id_campaign" Nullable="true" />
+          <Property Type="Int32" Name="id_script" Nullable="true" />
+        </ComplexType>
+        <EntityType Name="Domain">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Campaign">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Type" Type="Int32" Nullable="false" />
+          <Property Name="StartTime" Type="DateTime" Precision="3" />
+          <Property Name="EndTime" Type="DateTime" Precision="3" />
+          <Property Name="NumberContact" Type="Int32" />
+          <Property Name="Budgets" Type="Int32" />
+          <Property Name="isActive" Type="Boolean" Nullable="false" />
+          <Property Name="CampaignCode" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Domain" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="pg_data_import">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="mobile" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="center" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="created_at" Type="DateTime" Precision="3" />
+          <Property Name="Sent_log" Type="String" MaxLength="125" FixedLength="false" Unicode="true" />
+          <Property Name="CampaignCode" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="SMS_logs">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Mobile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Name" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Content" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="String" MaxLength="550" FixedLength="false" Unicode="true" />
+          <Property Name="Created_At" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityType Name="Group">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="idCity" Type="Int32" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MobilePRModelStoreContainer" CdmEntityContainer="MobilePREntities">
+          <FunctionImportMapping FunctionImportName="Data_Manager_PageList" FunctionName="MobilePRModel.Store.Data_Manager_PageList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MobilePRModel.Data_Manager_PageList_Result">
+                <ScalarProperty Name="RowNum" ColumnName="RowNum" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="mobile" ColumnName="mobile" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="center" ColumnName="center" />
+                <ScalarProperty Name="note" ColumnName="note" />
+                <ScalarProperty Name="created_date" ColumnName="created_date" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="agent" ColumnName="agent" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="center">
+            <EntityTypeMapping TypeName="MobilePRModel.center">
+              <MappingFragment StoreEntitySet="center">
+                <ScalarProperty Name="IdCenSale" ColumnName="IdCenSale" />
+                <ScalarProperty Name="EnglishName" ColumnName="EnglishName" />
+                <ScalarProperty Name="ShortName" ColumnName="ShortName" />
+                <ScalarProperty Name="IdCenCs2" ColumnName="IdCenCs2" />
+                <ScalarProperty Name="idCity" ColumnName="idCity" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="Data_Manager_PageList_By_TeamLead" FunctionName="MobilePRModel.Store.Data_Manager_PageList_By_TeamLead">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MobilePRModel.Data_Manager_PageList_By_TeamLead_Result">
+                <ScalarProperty Name="RowNum" ColumnName="RowNum" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="mobile" ColumnName="mobile" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="center" ColumnName="center" />
+                <ScalarProperty Name="note" ColumnName="note" />
+                <ScalarProperty Name="created_date" ColumnName="created_date" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="agent" ColumnName="agent" />
+                <ScalarProperty Name="sent_log" ColumnName="sent_log" />
+                <ScalarProperty Name="isCampaign" ColumnName="isCampaign" />
+                <ScalarProperty Name="source" ColumnName="source" />
+                <ScalarProperty Name="local_id" ColumnName="local_id" />
+                <ScalarProperty Name="id_cs" ColumnName="id_cs" />
+                <ScalarProperty Name="id_campaign" ColumnName="id_campaign" />
+                <ScalarProperty Name="id_script" ColumnName="id_script" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="City">
+            <EntityTypeMapping TypeName="MobilePRModel.City">
+              <MappingFragment StoreEntitySet="City">
+                <ScalarProperty Name="City_Name" ColumnName="City_Name" />
+                <ScalarProperty Name="City_Code" ColumnName="City_Code" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Local">
+            <EntityTypeMapping TypeName="MobilePRModel.Local">
+              <MappingFragment StoreEntitySet="Local">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="shortcode" ColumnName="shortcode" />
+                <ScalarProperty Name="parent_id" ColumnName="parent_id" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="city_id" ColumnName="city_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="local_id" ColumnName="local_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Source">
+            <EntityTypeMapping TypeName="MobilePRModel.Source">
+              <MappingFragment StoreEntitySet="Source">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Working">
+            <EntityTypeMapping TypeName="MobilePRModel.Working">
+              <MappingFragment StoreEntitySet="Working">
+                <ScalarProperty Name="UpdateAt" ColumnName="UpdateAt" />
+                <ScalarProperty Name="CreateAt" ColumnName="CreateAt" />
+                <ScalarProperty Name="ShortName" ColumnName="ShortName" />
+                <ScalarProperty Name="Descriptions" ColumnName="Descriptions" />
+                <ScalarProperty Name="WorkName" ColumnName="WorkName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="User">
+            <EntityTypeMapping TypeName="MobilePRModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="TeamName" ColumnName="TeamName" />
+                <ScalarProperty Name="idCenter" ColumnName="idCenter" />
+                <ScalarProperty Name="idGroup" ColumnName="idGroup" />
+                <ScalarProperty Name="idWork" ColumnName="idWork" />
+                <ScalarProperty Name="idManager" ColumnName="idManager" />
+                <ScalarProperty Name="idCity" ColumnName="idCity" />
+                <ScalarProperty Name="idParent" ColumnName="idParent" />
+                <ScalarProperty Name="LoaiTK" ColumnName="LoaiTK" />
+                <ScalarProperty Name="source" ColumnName="source" />
+                <ScalarProperty Name="isAdmin" ColumnName="isAdmin" />
+                <ScalarProperty Name="DateModify" ColumnName="DateModify" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="agent" ColumnName="agent" />
+                <ScalarProperty Name="EmailSignature" ColumnName="EmailSignature" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+                <ScalarProperty Name="FullName" ColumnName="FullName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ScritpStore">
+            <EntityTypeMapping TypeName="MobilePRModel.ScritpStore">
+              <MappingFragment StoreEntitySet="ScritpStore">
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="NameScript" ColumnName="NameScript" />
+                <ScalarProperty Name="UpdateAt" ColumnName="UpdateAt" />
+                <ScalarProperty Name="CreatAt" ColumnName="CreatAt" />
+                <ScalarProperty Name="Script" ColumnName="Script" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CampaignOption">
+            <EntityTypeMapping TypeName="MobilePRModel.CampaignOption">
+              <MappingFragment StoreEntitySet="CampaignOption">
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="UpdateAt" ColumnName="UpdateAt" />
+                <ScalarProperty Name="CreatAt" ColumnName="CreatAt" />
+                <ScalarProperty Name="Script_id" ColumnName="Script_id" />
+                <ScalarProperty Name="Campaign_Id" ColumnName="Campaign_Id" />
+                <ScalarProperty Name="City_Id" ColumnName="City_Id" />
+                <ScalarProperty Name="Local_Id" ColumnName="Local_Id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CampaignType">
+            <EntityTypeMapping TypeName="MobilePRModel.CampaignType">
+              <MappingFragment StoreEntitySet="CampaignType">
+                <ScalarProperty Name="CreateAt" ColumnName="CreateAt" />
+                <ScalarProperty Name="UpdateAt" ColumnName="UpdateAt" />
+                <ScalarProperty Name="TypeCode" ColumnName="TypeCode" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CampaignStore">
+            <EntityTypeMapping TypeName="MobilePRModel.CampaignStore">
+              <MappingFragment StoreEntitySet="CampaignStore">
+                <ScalarProperty Name="DomainSub" ColumnName="DomainSub" />
+                <ScalarProperty Name="CampaignCode" ColumnName="CampaignCode" />
+                <ScalarProperty Name="Center_Id" ColumnName="Center_Id" />
+                <ScalarProperty Name="Campaign_Op_Code" ColumnName="Campaign_Op_Code" />
+                <ScalarProperty Name="User_Id" ColumnName="User_Id" />
+                <ScalarProperty Name="Campaign_Id" ColumnName="Campaign_Id" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="pg_data">
+            <EntityTypeMapping TypeName="MobilePRModel.pg_data">
+              <MappingFragment StoreEntitySet="pg_data">
+                <ScalarProperty Name="id_script" ColumnName="id_script" />
+                <ScalarProperty Name="id_campaign" ColumnName="id_campaign" />
+                <ScalarProperty Name="id_cs" ColumnName="id_cs" />
+                <ScalarProperty Name="isCampaign" ColumnName="isCampaign" />
+                <ScalarProperty Name="local_id" ColumnName="local_id" />
+                <ScalarProperty Name="sent_log" ColumnName="sent_log" />
+                <ScalarProperty Name="agent" ColumnName="agent" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="created_date" ColumnName="created_date" />
+                <ScalarProperty Name="note" ColumnName="note" />
+                <ScalarProperty Name="center" ColumnName="center" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="mobile" ColumnName="mobile" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="Data_Manager_PageList_By_City" FunctionName="MobilePRModel.Store.Data_Manager_PageList_By_City">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="MobilePRModel.Data_Manager_PageList_By_City_Result">
+                <ScalarProperty Name="RowNum" ColumnName="RowNum" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="mobile" ColumnName="mobile" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="center" ColumnName="center" />
+                <ScalarProperty Name="note" ColumnName="note" />
+                <ScalarProperty Name="created_date" ColumnName="created_date" />
+                <ScalarProperty Name="created_by" ColumnName="created_by" />
+                <ScalarProperty Name="agent" ColumnName="agent" />
+                <ScalarProperty Name="sent_log" ColumnName="sent_log" />
+                <ScalarProperty Name="local_id" ColumnName="local_id" />
+                <ScalarProperty Name="isCampaign" ColumnName="isCampaign" />
+                <ScalarProperty Name="id_cs" ColumnName="id_cs" />
+                <ScalarProperty Name="id_campaign" ColumnName="id_campaign" />
+                <ScalarProperty Name="id_script" ColumnName="id_script" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="Domain">
+            <EntityTypeMapping TypeName="MobilePRModel.Domain">
+              <MappingFragment StoreEntitySet="Domain">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Campaign">
+            <EntityTypeMapping TypeName="MobilePRModel.Campaign">
+              <MappingFragment StoreEntitySet="Campaign">
+                <ScalarProperty Name="Domain" ColumnName="Domain" />
+                <ScalarProperty Name="CampaignCode" ColumnName="CampaignCode" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="Budgets" ColumnName="Budgets" />
+                <ScalarProperty Name="NumberContact" ColumnName="NumberContact" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="pg_data_import">
+            <EntityTypeMapping TypeName="MobilePRModel.pg_data_import">
+              <MappingFragment StoreEntitySet="pg_data_import">
+                <ScalarProperty Name="CampaignCode" ColumnName="CampaignCode" />
+                <ScalarProperty Name="Sent_log" ColumnName="Sent_log" />
+                <ScalarProperty Name="created_at" ColumnName="created_at" />
+                <ScalarProperty Name="center" ColumnName="center" />
+                <ScalarProperty Name="mobile" ColumnName="mobile" />
+                <ScalarProperty Name="address" ColumnName="address" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SMS_logs">
+            <EntityTypeMapping TypeName="MobilePRModel.SMS_logs">
+              <MappingFragment StoreEntitySet="SMS_logs">
+                <ScalarProperty Name="Created_At" ColumnName="Created_At" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Group">
+            <EntityTypeMapping TypeName="MobilePRModel.Group">
+              <MappingFragment StoreEntitySet="Group">
+                <ScalarProperty Name="idCity" ColumnName="idCity" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

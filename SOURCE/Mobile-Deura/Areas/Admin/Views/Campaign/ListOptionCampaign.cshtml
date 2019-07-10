@@ -1,0 +1,84 @@
+﻿@{
+    ViewBag.Title = "Thông tin Campaign";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+ 
+<style>
+    .loaderactive {
+        width: 100%;
+        position: absolute;
+        z-index: 10;
+        background-color: black;
+        opacity: 0.4;
+        height: 100%;
+        top: 0;
+    }
+</style>
+
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Quản lý Cấu hình Campaign</h2>
+    </div>
+    <div class="col-lg-2">
+        <h2> </h2>
+        <button id="btn-add-option" @Html.Raw(ViewBag.TypeAccount == 1 ? "style='display:none'" : "") class="btn btn-w-m btn-success">Cài đặt campaign</button>
+    </div>
+
+</div>
+
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <div class="ibox-tools">
+                    </div>
+                </div>
+                <div class="ibox-content" id="content-container">
+                    @* table list *@
+
+                    @Html.Action("_ListOptionCampaign");
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<script>
+
+    $(function () {
+        BindButtonAddClick();
+    });
+
+    function BindButtonAddClick() {
+
+        $("#btn-add-option").click(function () {
+
+            LoadPartialView('@Url.Action("AddOptionCampaign")', $("#content-container"));
+
+        });
+    }
+
+    function LoadPartialView(url, container) {
+
+        $.ajax({
+            url: url,
+            type: "GET",
+            dataType: "html",
+            success: function (data) {
+                container.html(data);
+            },
+            beforeSend: function () {
+                container.append($('<div class="loaderactive"><div id="loader"></div></div>'));
+            }
+        });
+    }
+
+</script>

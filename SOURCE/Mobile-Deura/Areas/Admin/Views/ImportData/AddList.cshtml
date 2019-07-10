@@ -1,0 +1,27 @@
+﻿@using (Ajax.BeginForm("UploadExcel", "ImportData", new AjaxOptions { HttpMethod = "POST" }, new { enctype = "multipart/form-data" }))
+{
+    <div class="form-group">
+
+        <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+            <div class="form-control" data-trigger="fileinput">
+                <i class="glyphicon glyphicon-file fileinput-exists"></i>
+                <span class="fileinput-filename"></span>
+            </div>
+            <span class="input-group-addon btn btn-default btn-file">
+                <span class="fileinput-new">Thêm file</span>
+                <span class="fileinput-exists">Đổi file</span>
+                <input type="file" id="FileUpload" name="FileUpload" class="" />
+            </span>
+            <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">Chọn file</a>
+        </div>
+
+    </div>
+
+    <div class="form-group">
+
+        <input type="submit" value="Upload" id="btnSubmit" class="btn btn-primary" />
+
+    </div>
+
+}
+

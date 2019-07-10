@@ -1,0 +1,31 @@
+﻿
+@if (Model == null)
+{
+
+}
+else
+{
+    foreach (var item in Model)
+    {
+        <div class="alert alert-danger">
+            @Html.Raw("Bạn được phân công trong chiến dịch :") <br />
+            - Tên chiến dịch : @item.Name <br />
+            - Ngày kết thúc : @item.EndTime <br />
+            <a class="alert-link" target="_blank" href="@Url.Action("Campaign", "Home", new {id = item.Campaign_Id, name = item.Name, endtime = item.EndTime, script_id = item.Script_id , campaigncode = item.CampaignCode })" style="float: right">>>Nhấn vào đây để nhập dữ liệu <<</a> <br />
+        </div>
+    }
+
+    if (@ViewBag.checkcenter != null)
+    {
+        foreach (var item in ViewBag.checkcenter)
+        {
+            <div class="alert alert-danger">
+                @Html.Raw("Trung tâm đang có chiến dịch :") <br />
+                - Tên chiến dịch : @item.Name <br />
+                - Ngày kết thúc :  @item.EndTime <br />
+                                                 <a class="alert-link" target="_blank" href="@Url.Action("CampaignCenter", "Home", new {id = item.Campaign_Id, name = item.Name, endtime = item.EndTime, script_id = item.Script_id , campaigncode = item.CampaignCode })" style="float: right">>> Nhấn vào đây để nhập dữ liệu <<</a> <br />
+            </div>
+        }
+    }
+
+}

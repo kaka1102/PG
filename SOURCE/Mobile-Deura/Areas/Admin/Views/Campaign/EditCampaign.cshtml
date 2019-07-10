@@ -1,0 +1,265 @@
+﻿@{
+    var model = (Campaign)Model;
+}
+
+ 
+<style>
+    .loaderactive {
+        width: 100%;
+        position: absolute;
+        z-index: 10;
+        background-color: black;
+        opacity: 0.4;
+        height: 100%;
+        top: 0;
+    }
+</style>
+<link href="~/Content/css/plugins/datapicker/datepicker3.css" rel="stylesheet" />
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Thêm mới Campaign </h2>
+    </div>
+    <div class="col-lg-10">
+
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <div class="ibox-tools">
+                </div>
+            </div>
+            <div class="ibox-content" id="content-container-add">
+                             
+                <div class="col-md-12">
+
+                    <div class="col-sm-6">
+
+                        <div class="form-group">
+
+                            <labe>Code</labe><span style="color: red;">*</span>
+                            <input id="txt-campain-code-ed" type="text" class="form-control" value="@(model.CampaignCode)" disabled="disabled">
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-sm-6">
+
+                        <div class="form-group">
+
+                            <labe>Id</labe><span style="color: red;">*</span>
+                            <input id="txt-campain-id-ed" type="text"  class="form-control" value="@(model.Id)" disabled="disabled">
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+                <div class="col-md-12">
+
+                    <div class="col-sm-6">
+
+                        <div class="form-group">
+
+                            <labe>Name Campain</labe><span style="color: red;">*</span>
+                            <input id="txt-campain-name-ed" type="text" placeholder="Nhập Campaign" class="form-control" value="@(model.Name)">
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+                <div class="col-md-12">
+                    <div class="col-md-4">
+
+                        <div class="form-group">
+                            <labe>Start Day</labe><span style="color: red;">*</span>
+                            <input id="txt-campain-startdate-ed" type="text" placeholder="Ngày bắt đầu chạy" class="form-control" value="@(model.StartTime)" autocomplete="off">
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <div class="form-group">
+                            <labe>End Day</labe><span style="color: red;">*</span>
+                            <input id="txt-campain-enddate-ed" type="text" placeholder="Ngày kết thúc" class="form-control" value="@(model.EndTime)" autocomplete="off">
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-12">
+
+                    <div class="col-sm-2">
+
+                        <div class="form-group">
+
+                            <labe>Number of contacts</labe><span style="color: red;">*</span>
+                            <input id="txt-campain-number-contact-ed" type="text" placeholder="" class="form-control" value="@(model.NumberContact)" autocomplete="off">
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-sm-2">
+
+                        <div class="form-group">
+
+                            <labe>Budgets</labe><span style="color: red;">*</span>
+                            <input id="txt-campain-budget-ed" type="text" placeholder="" class="form-control" value="@(model.Budgets)" autocomplete="off">
+
+                        </div>
+
+                    </div>
+                    
+                    <div class="col-md-3">
+
+                        <div class="form-group">
+                            <labe>Kiểu campaign</labe><span style="color: red;">*</span>                            
+                            <select id="cbb-lsCampaign-type-list-ed" class="form-control">
+                                @if (ViewBag.lsCampaigntype != null)
+                                {
+                                    <option value="0">-- Chọn kiểu campaign --</option>
+
+                                    foreach (var item in ViewBag.lsCampaigntype)
+                                    {
+                                        <option value="@(item.Id)" @Html.Raw( item.Id == model.Type ? "Selected" : "") >@(item.TypeCode)</option>
+                                    }
+                                }
+                                else
+                                {
+                                    <option value="0">Chưa có kiểu campaign nào được khai báo</option>
+                                }
+                            </select>
+                            
+                        </div>
+
+                    </div>
+
+                </div>
+
+                
+                <div class="col-md-8">
+
+                    <h2> </h2>
+
+                    <button id="btn-add-campaign-ed" @Html.Raw(ViewBag.TypeAccount == 1 ? "style='display:none'" : "") class="btn btn-w-m btn-success">Update</button>
+                    <button id="btn-clear-campaign-ed" @Html.Raw(ViewBag.TypeAccount == 1 ? "style='display:none'" : "") class="btn btn-w-m btn-success">Clear</button>
+                    <button id="btn-goback-campaign-ed" @Html.Raw(ViewBag.TypeAccount == 1 ? "style='display:none'" : "") class="btn btn-w-m btn-success">Cancel</button>
+
+                </div>
+
+                <div class="col-md-12">
+
+                    <div class="form-group">
+                        <p id="message-ed" style="width: 100%; text-align: center;"></p>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<script>
+
+    $(document).ready(function () {
+
+        BindBtnGoBackCampaign();
+        BindBtnAdd();
+        BindAddDate();
+    });
+
+    function BindAddDate() {
+
+        $('#txt-campain-startdate-ed').datepicker({
+            todayBtn: "linked",
+            keyboardNavigation: false,
+            forceParse: false,
+            calendarWeeks: true,
+            autoclose: true
+        });
+
+        $('#txt-campain-enddate-ed').datepicker({
+            todayBtn: "linked",
+            keyboardNavigation: false,
+            forceParse: false,
+            calendarWeeks: true,
+            autoclose: true
+        });
+
+    }
+
+    function BindBtnGoBackCampaign() {
+
+        $("#btn-goback-campaign-ed").click(function () {
+
+                $("#content-container-add").show();
+                LoadPartialView('@Url.Action("_ListCampaign")', $("#content-container"));
+            }
+        );
+
+    }
+
+    function BindBtnAdd() {
+
+        $("#btn-add-campaign-ed").click(function () {
+
+            var type = $("#cbb-lsCampaign-type-list-ed").find("option:selected").val();
+
+            console.log("type --" + type);
+
+            var objdata = {
+
+                id: $("#txt-campain-id-ed").val(),
+                name: $("#txt-campain-name-ed").val(),
+                starttime: $("#txt-campain-startdate-ed").val(),
+                endtime: $("#txt-campain-enddate-ed").val(),
+                number: $("#txt-campain-number-contact-ed").val(),
+                budget: $("#txt-campain-budget-ed").val(),
+                type: type
+
+            };
+
+            if (type != 0) {
+
+                $.ajax({
+
+                    type: "GET",
+                    url: "/Campaign/_EditCampaign",
+                    data: objdata,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                        console.log(data);
+                        $("#message-ed").text(data.result);
+                        $("#message-ed").css("color", "red");
+                    },
+                    failure: function () {
+                        alert("fail");
+                    }
+                });
+
+            } else {
+
+                $("#message-ed").text("Chưa chọn kiểu campaign");
+                $("#message-ed").css("color", "red");
+
+            }
+           
+
+
+        });
+    }
+
+
+</script>

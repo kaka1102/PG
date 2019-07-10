@@ -1,0 +1,43 @@
+﻿@using Mobile_Deura.Const
+
+@{
+    var model = (List<Mobile_Deura.Models.ImportDataView>)Model;
+}
+
+<div class="table-responsive">
+    <table class="table table-striped table-bordered table-hover dataTables-example">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Mobile</th>
+                <th>Center</th>
+                <th>Sent_Log</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @if (model != null)
+            {
+                foreach (var item in model)
+                {
+                    <tr>
+                        <td> @(item.Id) </td>
+                        <td> @(item.name) </td>
+                        <td> @(item.address) </td>
+                        <td> @(item.mobile) </td>
+                        <td> @(item.center) </td>
+                        <td> @(item.Sent_log)</td>
+                    </tr>
+                }
+            }
+
+
+
+        </tbody>
+
+    </table>
+
+</div>

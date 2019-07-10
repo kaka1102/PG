@@ -1,0 +1,260 @@
+﻿@using Mobile_Deura.Untils
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Quản lý dữ liệu Venesa</title>
+
+    <link href="/Content/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/Scripts/boostrap-dialog/bootstrap-dialog.css" rel="stylesheet">
+    <link href="/Content/font-awesome/css/font-awesome.css" rel="stylesheet">
+
+    <link href="/Content/css/animate.css" rel="stylesheet">
+    <link href="/Content/css/style.css" rel="stylesheet">
+
+    <link href="/Content/css/plugins/dataTables/datatables.min.css" rel="stylesheet">
+    <script src="/Content/js/jquery-3.1.1.min.js"></script>
+
+
+    <link href="~/Content/css/plugins/iCheck/flat/blue.css" rel="stylesheet" />
+    <link href="~/Content/css/plugins/iCheck/all.css" rel="stylesheet" />
+    <script src="~/Content/css/plugins/iCheck/icheck.min.js"></script>
+
+    
+    <style>
+        .lock {
+            -moz-user-select: none; /* Firefox */
+            -ms-user-select: none; /* Internet Explorer */
+            -khtml-user-select: none; /* KHTML browsers (e.g. Konqueror) */
+            -webkit-user-select: none; /* Chrome, Safari, and Opera */
+            -webkit-touch-callout: none; /* Disable Android and iOS callouts*/
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+        <nav class="navbar-default navbar-static-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav metismenu" id="side-menu">
+                    <li class="nav-header">
+                        <div class="dropdown profile-element">
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                                <span class="clear">
+                                    <span class="block m-t-xs">
+                                        <strong class="font-bold">@(AccountUntils.GetUser().UserName)</strong>
+                                    </span> <span class="text-muted text-xs block"> @Html.Raw((AccountUntils.GetUser().LoaiTK == 0 || AccountUntils.GetUser().isAdmin == true) ? "Admin cấp cao" : "Team Lead")<b class="caret"></b></span>
+                                </span>
+                            </a>
+                            <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                <li>
+                                    <a href="/Admin/Login/Logout">Logout</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="logo-element">
+                            IN+
+                        </div>
+                    </li>
+
+                    @*@if (AccountUntils.GetUser().LoaiTK == 100 || AccountUntils.GetUser().isAdmin == true)
+                        {
+
+                            <li>
+                                <a>
+                                    <i class="fa fa-th-large"></i> <span class="nav-label">Quản lý tài khoản</span> <span class="fa arrow"></span>
+                                </a>
+                                <ul class="nav nav-second-level collapse">
+                                    <li>
+                                        <a href="/Admin/ManagerAccount/ListAccount"> @Html.Raw((AccountUntils.GetUser().LoaiTK == 100 && AccountUntils.GetUser().isAdmin == true) ? "Danh sách tài khoản" : "Tài khoản trong Team")</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li>
+                                <a>
+                                    <i class="fa fa-th-large"></i> <span class="nav-label">Quản lý local</span> <span class="fa arrow"></span>
+                                </a>
+
+                                <ul class="nav nav-second-level collapse">
+                                    <li>
+                                        <a href="/Admin/LocalManager/ListLocalManager"> @Html.Raw((AccountUntils.GetUser().LoaiTK == 100 && AccountUntils.GetUser().isAdmin == true) ? "Danh sách Local" : "")</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                        }*@
+
+
+                    @if (AccountUntils.GetUser().LoaiTK == 100 || AccountUntils.GetUser().LoaiTK == 1 || AccountUntils.GetUser().isAdmin == true)
+                    {
+
+                        <li>
+                            <a>
+                                <i class="fa fa-th-large"></i> <span class="nav-label">Quản lý tài khoản</span> <span class="fa arrow"></span>
+                            </a>
+                            <ul class="nav nav-second-level collapse">
+                                <li>
+                                    <a href="/Admin/ManagerAccount/ListAccount"> @Html.Raw((AccountUntils.GetUser().LoaiTK == 100 || AccountUntils.GetUser().isAdmin == true) ? "Danh sách tài khoản" : "Tài khoản trong Team")</a>
+                                </li>
+                            </ul>
+                        </li>
+
+
+                        <li>
+                            <a>
+                                <i class="fa fa-th-large"></i> <span class="nav-label">Quản lý dữ liệu</span> <span class="fa arrow"></span>
+                            </a>
+                            <ul class="nav nav-second-level collapse">
+                                <li>
+                                    <a href="/Admin/DataManager/ListDataManager"> @Html.Raw((AccountUntils.GetUser().LoaiTK == 100 || AccountUntils.GetUser().LoaiTK == 1 || AccountUntils.GetUser().isAdmin == true) ? "Danh sách dữ liệu" : "")</a>
+                                </li>
+                            </ul>
+                        </li>
+
+
+                        if (AccountUntils.GetUser().LoaiTK != 1)
+                        {
+                            <li>
+                                <a>
+                                    <i class="fa fa-th-large"></i> <span class="nav-label">Quản lý local</span> <span class="fa arrow"></span>
+                                </a>
+
+                                <ul class="nav nav-second-level collapse">
+                                    <li>
+                                        <a href="/Admin/LocalManager/ListLocalManager"> @Html.Raw((AccountUntils.GetUser().LoaiTK == 100 || AccountUntils.GetUser().isAdmin == true) ? "Danh sách Local" : "")</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+
+                        if (AccountUntils.GetUser().isAdmin == true)
+                        {
+                            <li>
+                                <a>
+                                    <i class="fa fa-th-large"></i> <span class="nav-label"> Quản lý campain</span> <span class="fa arrow"></span>
+                                </a>
+                                <ul class="nav nav-second-level collapse">
+                                    <li>
+                                        <a href="/Admin/Campaign/ListCampaign"> Danh sách campaigns </a>
+                                    </li>
+                                    <li>
+                                        <a href="/Admin/Campaign/listscript"> Danh sách scripts </a>
+                                    </li>
+                                    <li>
+                                        <a href="/Admin/Campaign/ListOptionCampaign"> Cấu hình campaigns</a>
+                                    </li>
+                                </ul>
+
+                            </li>
+
+                        }
+
+                        <li>
+
+                            <a>
+                                <i class="fa fa-th-large"></i> <span class="nav-label"> Import Data</span> <span class="fa arrow"></span>
+                            </a>
+                            <ul class="nav nav-second-level collapse">
+
+                                <li>
+                                    <a href="/Admin/ImportData/ListImportData"> Danh sách Data Import </a>
+                                </li>
+
+
+                            </ul>
+                        </li>
+
+                    }
+
+                </ul>
+
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="gray-bg">
+            <div class="row border-bottom">
+                <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                    <div class="navbar-header">
+                    </div>
+                    <ul class="nav navbar-top-links navbar-right">
+                        <li>
+                            <a href="/Admin/Login/Logout">
+                                <i class="fa fa-sign-out"></i> Đăng xuất
+                            </a>
+                        </li>
+                    </ul>
+
+                </nav>
+            </div>
+            @RenderBody()
+            <div class="footer">
+                <div>
+                    <strong>Copyright</strong> Example Company &copy; 2014-2017
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- Mainly scripts -->
+    <script src="/Content/js/bootstrap.min.js"></script>
+    <script src="/Content/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="/Content/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="/Content/js/inspinia.js"></script>
+    <script src="/Content/js/plugins/pace/pace.min.js"></script>
+
+    <script src="/Content/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="/Content/js/plugins/dataTables/datatables.min.js"></script>
+    <script src="/Scripts/boostrap-dialog/bootstrap-dialog.js"></script>
+    <script src="~/Scripts/plugins/datapicker/bootstrap-datepicker.js"></script>
+    <script src="~/Scripts/plugins/jquery.form.js"></script>
+
+
+
+</body>
+
+<script>
+
+    function BoostrapDialogConfirm(title, message, type, callback) {
+        BootstrapDialog.confirm({
+                title: title,
+                message: message,
+                type: type, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+                closable: true, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                btnCancelLabel: 'CANCEL', // <-- Default value is 'Cancel',
+                btnOKLabel: 'OK', // <-- Default value is 'OK',
+                btnOKClass: 'btn-warning', // <-- If you didn't specify it, dialog type will be used,
+                callback: callback
+            }
+        );
+    }
+
+    
+
+    function BoostrapDialogAlert(title, message, type) {
+        BootstrapDialog.alert({
+                title: title,
+                message: message,
+                type: type, // <-- Default value is BootstrapDialog.TYPE_PRIMARY
+                closable: true, // <-- Default value is false
+                draggable: true, // <-- Default value is false
+                btnOKLabel: 'OK', // <-- Default value is 'OK',
+                btnOKClass: 'btn-warning' // <-- If you didn't specify it, dialog type will be used,
+            }
+        );
+    }
+
+
+</script>
+</html>

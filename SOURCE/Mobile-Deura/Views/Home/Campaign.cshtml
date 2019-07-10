@@ -1,0 +1,259 @@
+﻿@using Mobile_Deura.Untils
+@{
+    int count = 0;
+}
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Venesa</title>
+
+    <link href="/Content/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/Content/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="/Content/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="/Content/css/animate.css" rel="stylesheet">
+    <link href="/Content/css/style.css" rel="stylesheet">
+    <link href="/Content/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+    <script src="/Content/js/jquery-3.1.1.min.js"></script>
+</head>
+
+<body oncopy="return false" oncut="return false" onpaste="return false">
+
+<div id="wrapper">
+    <div id="page-wrapper" class="gray-bg" style="margin-left: 0;">
+        <div class="row border-bottom">
+            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                <ul class="nav navbar-top-links navbar-right">
+                    <li>
+                        <a style="color: coral; margin-left: 20px;">
+                            Xin chào : @AccountUntils.GetEmp().UserName
+                        </a>
+                    </li>
+                    <li style="float: right;">
+                        <a href="/Login/Logout"> <i class="fa fa-sign-out"></i> Đăng xuất</a>
+                    </li>
+                </ul>
+
+            </nav>
+        </div>
+        <div class="row wrapper border-bottom white-bg page-heading">
+            <div class="col-lg-10">
+                <h2></h2>
+                <ol class="breadcrumb">
+                    <li>
+                        <a href="/Home/Index"><i class="fa fa-home"></i> Home</a>
+                    </li>
+                    <li>
+                        <a href="/Home/ListDataCurrentday"><i class="fa fa-list"></i> Danh sách</a>
+                    </li>
+                    <li>
+                        <a href="/AccountInfo/ChangePassword"><i class="fa fa-key"></i> Đổi mật khẩu</a>
+                    </li>
+                </ol>
+            </div>
+            <div class="col-lg-2">
+
+            </div>
+        </div>
+        <div class="wrapper wrapper-content animated fadeInRight">
+            <div class="row">
+                <div class="col-lg-10">
+                    <div class="ibox float-e-margins">
+
+                        <div class="ibox-title" style="color: red"">
+                            <h5>Chiến dịch : @ViewBag.name </h5>
+                        </div>
+                        <div class="ibox-title">
+                            <p>Kết thúc : @ViewBag.endtime</p>
+
+                        </div>
+                        <div class="ibox-content">
+
+                            <form method="get" class="form-horizontal">
+
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Họ và tên</label><span style="color: red;">*</span>
+
+                                    <div class="col-sm-10">
+                                        <input id="txt-fullname" type="text" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Số điện thoại</label><span style="color: red;">*</span>
+
+                                    <div class="col-sm-10">
+
+                                        <input id="txt-phone" type="text" class="form-control">
+
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group">
+
+                                    <label class="col-sm-2 control-label">Tên Local</label><span style="color: red;">*</span>
+                                    <div class="col-sm-10">
+
+                                        @Html.Action("LocalComboboxLocal")
+
+                                    </div>
+
+                                </div>
+
+                                
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">Trung tâm</label>
+                                    <div class="col-sm-10">
+
+                                        @Html.Action("LoadComboboxCenter")
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="form-group" style="display: none">
+
+                                    <label class="col-sm-2 control-label"> Chiến dịch</label>
+                                    <div class="col-sm-10">
+
+                                        <input type="txt" id="txt-campaign-id" class="minimal" value="@ViewBag.campaign_id">
+                                        <input type="txt" id="txt-script-id" class="minimal" value="@ViewBag.Script_id">
+                                        <input type="txt" id="txt-campaign-code" class="minimal" value="@ViewBag.campaigncode">
+                                        
+                                    </div>
+                                    
+                                </div>
+
+                                <div class="form-group">
+
+                                    <label class="col-sm-2 control-label">Ghi chú</label>
+
+                                    <div class="col-sm-10">
+                                        <textarea id="txt-note" class="form-control" rows="5"></textarea>
+                                    </div>
+
+                                </div>
+
+                                <div class="hr-line-dashed"></div>
+
+                                <div class="form-group">
+                                    <p id="message" style="width: 100%; text-align: center;"></p>
+                                </div>
+
+                                <div class="form-group">
+
+                                    <div class="col-sm-4 col-sm-offset-2">
+                                        <button id="btn-submit" class="btn btn-primary" type="button">Lưu</button>
+                                        <button id="btn-reset" class="btn btn-white" type="button">Làm lại</button>
+                                    </div>
+
+                                </div>
+
+
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+                     
+
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/Content/js/bootstrap.min.js"></script>
+
+<script>
+
+    $(function () {
+
+        BindButtonSubmitCampaignClick();
+        //  BindButtonResetClick();       
+    });
+
+    function BindButtonSubmitCampaignClick() {
+
+        $("#btn-submit").click(function () {
+
+                var local = $("input[type='radio']:checked").val();
+                var txtcenter = $("#txt-center option:selected").val();
+  
+                if (local == "0") {
+
+                    $("#message").css("color", "red");
+                    $("#message").text("Mời chọn Local");
+                    
+                } else {
+
+                    $("#message").text("");
+
+                    var objdata2 = {
+
+                        fullname : $("#txt-fullname").val(),
+                        phone: $("#txt-phone").val(),
+                        //address: $("#txt-address").val(),
+                        center: $("#txt-center").val(),
+                        note: $("#txt-note").val(),         
+                        localid: $("input[type='radio']:checked").val(),
+                        id_campaign: $("#txt-campaign-id").val(),
+                        id_script: $("#txt-script-id").val(),
+                        campaigncode: $("#txt-campaign-code").val()
+                    };
+
+                    console.log(objdata2);
+
+                    if (txtcenter === "") {
+
+                        console.log("chua chon trung tam");
+                        $("#message").css("color", "red");
+                        $("#message").text("Chưa chọn trung tâm");
+
+                    } else {
+
+                        $.ajax({
+                            type: "POST",
+                            url: "/Home/_AddDataCampaign",
+                            data: JSON.stringify(objdata2),
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            success: function (data) {
+                                if (data.result.IsSuccess === true) {
+
+                                    $("#message").css("color", "darkcyan");
+                                    $("#message").text(data.result.Message);
+                                    $("#txt-fullname").val("");
+                                    $("#txt-phone").val("");
+                                    $("#txt-address").val("");
+                                    $("#txt-center").val("");
+                                    $("#txt-note").val("");
+                                    //   $('#txt-local_id option:selected').val();
+                                    $('input[type="radio"]').iCheck('uncheck');
+                                    $('#rdbNone').parent().addClass('checked');
+
+ 
+                                } else {
+
+                                    $("#message").css("color", "red");
+                                    $("#message").text(data.result.Message);
+
+                                }
+                            },
+                            failure: function () {
+                                alert("fail");
+                            }
+                        });
+                    }
+                }
+            }
+        );
+    }
+
+</script>
+
+</body>
+
+</html>

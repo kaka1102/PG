@@ -1,0 +1,224 @@
+﻿@{
+    var model = (CampaignSettiong)Model;
+}
+
+<link href="~/Content/css/plugins/multiple-select/bootstrap-multiselect.css" rel="stylesheet" />
+<script src="~/Scripts/plugins/multiple-select/bootstrap-multiselect.js"></script>
+<script src="~/Scripts/plugins/store/lokijs.min.js"></script>
+
+<div class="ibox float-e-margins">
+    <div class="ibox-title">
+        <h5>Cấu hình Campaign</h5>
+    </div>
+
+    <div class="ibox-content">
+
+        <div class="row">
+
+            <div class="col-sm-6">
+
+                <label>ID Code</label><span style="color: red;">*</span>
+                <input id="txt-campaign-code-ed" type="text" class="form-control" value="@(model.code)" disabled="disabled">
+
+            </div>
+
+
+            <div class="col-sm-6">
+
+                <label>ID Campaign</label><span style="color: red;">*</span>
+                <input id="txt-campaign-id-ed" type="text" class="form-control" value="@(model.campaign_id)" disabled="disabled">
+
+            </div>
+
+        </div>
+        <br />
+        <div class="row">
+
+
+
+            <div class="col-sm-6">
+                <div class="form-group">
+
+                    <label>Danh sách campaign</label><span style="color: red;">*</span>
+
+                    <select id="cbb-lsCampaignOption-script" class="form-control">
+
+                        @if (ViewBag.listScript != null)
+                        {
+                            <option value="0">-- Chọn campaign --</option>
+                            foreach (var item in ViewBag.listScript)
+                            {
+                                <option value="@(item.Id)" @Html.Raw(item.Id == model.script_id ? "selected" : "")>@(item.NameScript)</option>
+                            }
+                        }
+                        else
+                        {
+
+                            <option value="0">Chưa có campaign nào khai báo</option>
+
+                        }
+                    </select>
+
+                </div>
+            </div>
+
+
+            <div class="col-sm-6">
+
+                <div class="form-group">
+                    <label>Danh sách trung tâm cho campaign</label><span style="color: red;">*</span>
+                    <select id="example-enableFiltering-includeSelectAllOption" multiple="multiple">
+                        @if (ViewBag.Center != null)
+                        {
+                            foreach (var item in ViewBag.Center)
+                            {
+
+                                if (ViewBag.CenterInStore != null)
+                                {
+                                    <option value="@(item.id)" data-key="@(item.name)"
+                                            @foreach (var _item in ViewBag.CenterInStore) { if (_item.Center_Id == item.id) { @Html.Raw("selected") } }>
+                                        @(item.name)
+                                    </option>
+
+                                }
+                            }
+                        }
+
+                    </select>
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <div class="row">
+
+            <div class="form-group">
+                <p id="message" style="width: 100%; text-align: center;"></p>
+            </div>
+
+            <div class="col-sm-12">
+                <button id="btn-submit" class="btn btn-primary" type="button">Lưu lại</button>
+                <button id="btn-cancel" class="btn btn-white" type="button">Quay lại</button>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<script>
+
+    var db = new loki('Center');
+    var centers = db.addCollection('Center', { indices: ['Id'] });
+    centers.clear();
+
+    $(document).ready(function () {
+
+        BindMutiSelect();
+        BindSubmit();
+        BindBtnCancel();
+    });
+
+    function BindBtnCancel() {
+
+        $("#btn-cancel").click(function() {
+
+            LoadPartialView('@Url.Action("_ListOptionCampaign")', $("#content-container"));
+
+        });
+
+    }
+
+    function BindSubmit() {
+
+        $("#btn-submit").click(function () {
+
+            var obj2 = centers.chain().data({ removeMeta: true });
+
+            var objdata = { data: JSON.stringify(obj2), compaign_id: $("#txt-campaign-id-ed").val(), script_id: $("#cbb-lsCampaignOption-script").find('option:selected').val(), code: $("#txt-campaign-code-ed").val() }
+
+            $.ajax({
+                type: "GET",
+                url: "/Campaign/_EditOptionCampaign2",
+                data: objdata,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+
+                    $("#message").text(data.result);
+                    $("#message").css("color", "red");
+
+                },
+                failure: function () {
+                    alert("fail");
+                }
+            });
+
+        });
+
+    }
+
+    function BindMutiSelect() {
+
+        var uchain = centers.chain().data();
+
+        if (uchain.length == 0) {
+
+            BindOnChange();
+            $('#example-enableFiltering-includeSelectAllOption').multiselect({
+                includeSelectAllOption: false,
+                enableFiltering: true,
+                maxHeight: 300,
+                buttonWidth: '650px',
+                onChange: function (option, checked, select) {
+
+                    if (checked) {
+
+                        centers.insert({ name: $(option).attr('data-key'), Id: $(option).val() });
+                    } else {
+
+                        centers.chain().find({ Id: $(option).val() }).remove();
+                    }
+
+                },
+
+            });
+
+        } else {
+
+            $('#example-enableFiltering-includeSelectAllOption').multiselect({
+                includeSelectAllOption: false,
+                enableFiltering: true,
+                maxHeight: 300,
+                buttonWidth: '650px',
+                onChange: function (option, checked, select) {
+
+                    if (checked) {
+
+                        centers.insert({ name: $(option).attr('data-key'), Id: $(option).val() });
+                    } else {
+
+                        centers.chain().find({ Id: $(option).val() }).remove();
+                    }
+
+                },
+
+            });
+
+        }
+
+    }
+
+    function BindOnChange() {
+
+        var selected = $("#example-enableFiltering-includeSelectAllOption").find("option:selected");
+        selected.each(function () {
+            centers.insert({ name: $(this).attr('data-key'), Id: $(this).val() });
+        });
+    }
+
+
+</script>

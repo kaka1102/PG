@@ -1,0 +1,438 @@
+﻿
+<style>
+
+    #message {
+        color: red;
+    }
+
+</style>
+<div class="ibox float-e-margins">
+    <div class="ibox-title">
+        <h5>Thêm mới tài khoản</h5>
+    </div>
+    <div class="ibox-content">
+        <div class="row">
+
+            <div class="col-sm-10 b-r">
+
+                <label> Chú ý : </label> <span style="color: red;"> Tạo User cho thành viên yêu cầu người tạo nhập đầy đủ thông tin chính xác</span><br />
+
+                <div class="form-group"><label>Username</label><span style="color: red;">*</span> <input id="txt-username" type="text" placeholder="Enter username" class="form-control"></div>
+                <div class="form-group"><label>Password</label><span style="color: red;">*</span> <input id="txt-password" type="password" placeholder="Password" class="form-control"></div>
+                <div class="form-group"><label>Xác nhận password</label><span style="color: red;">*</span> <input id="txt-confirm-password" type="password" placeholder="Password" class="form-control"></div>
+                <div class="form-group"><label>Họ và tên</label><span style="color: red;">*</span> <input id="txt-name" type="text" placeholder="Họ và tên" class="form-control"></div>
+                <div class="form-group"><label>Ngày tháng năm sinh</label> <input id="txt-bird" type="text" placeholder="dd/mm/yyyy" class="form-control"></div>
+                <div class="form-group"><label>Email</label><span style="color: red;">*</span> <input id="txt-email" type="text" placeholder="example@gmail.com" class="form-control"></div>
+                <div class="form-group"><label>Mã nhân viên</label><span style="color: red;">*</span> <input id="txt-phone" type="text" placeholder="" class="form-control"></div>
+
+                <div class="form-group">
+                    <label>Source</label><span style="color: red;">*</span>
+
+                    <label>Chú ý :  </label> <span style="color: red;">Đối với User bắt buộc phải chọn source </span><br />
+
+                    <select id="txt-source" class="form-control">
+
+                        <option value="">-- Không chọn SOURCE --</option>
+                        <option value="HPG">-- Hải Phòng --</option>
+                        <option value="CTO">-- Cần Thơ --</option>
+                        <option value="HNI.PG">-- Hà Nội --</option>
+                         <option value="HCM.PG">-- TP HCM --</option>
+
+                    </select>
+
+
+                </div>
+
+
+                <div class="form-group" id="lst-city">
+                </div>
+
+                <div class="form-group">
+
+                    <label>Loại tài khoản : &nbsp;&nbsp; &nbsp;&nbsp; </label>
+
+                    <label style="margin-right: 40px">
+                        <input type="radio" class="minimal" id="isAccountUser" name="typebonus" checked="checked" value="2">
+                        &nbsp;&nbsp; Nhân viên
+                    </label>
+                    <label>
+                        <input type="radio" class="minimal" id="isAccountTeamLead" name="typebonus" value="1">
+                        &nbsp;&nbsp; Team Lead
+                    </label>
+                    <label>
+                        <input type="radio" class="minimal" id="isAccountBC" name="typebonus" value="3">
+                        &nbsp;&nbsp; Nhân viên BC
+                    </label>
+
+                    @if (ViewBag.LoaiTK != 100 && ViewBag.LoaiTK != 1)
+                    {
+                        <label>
+                            <input type="radio" class="minimal" id="isAccountUserManager" name="typebonus" value="100">
+                            &nbsp;&nbsp; Quản lý
+                        </label>
+                    }
+
+
+                    @if (ViewBag.LoaiTK != null)
+                    {
+                        if (ViewBag.LoaiTK == 0)
+                        {
+                            <label>
+                                <input type="radio" class="minimal" id="isAccountImport" name="typebonus" value="4">
+                                &nbsp;&nbsp; Nhân viên Import
+                            </label>
+                        }
+
+                    }
+
+
+                </div>
+
+
+                <select id="cbb-team-lead" class="form-control">
+
+                    @if (ViewBag.lstTeamLead != null)
+                    {
+                        <option value="0">-- Không chọn Team --</option>
+                        foreach (var item in ViewBag.lstTeamLead)
+                        {
+                            <option value="@(item.Id)" data-key="@(item.idManager)">@(item.UserName)</option>
+                        }
+                    }
+                    else
+                    {
+                        <option value="0">Hệ thống chưa có tài khoản Team lead</option>
+                    }
+
+                </select>
+                
+                 
+                <select id="cbb-group-manger" class="form-control" style="display: none">
+                  
+                        @if (ViewBag.Group != null)
+                        {
+                            <option value="0">-- Chưa chọn Mã Team --</option>
+                            foreach (var item in ViewBag.Group)
+                            {
+                                <option value="@(item.Name)">@(item.Name)</option>
+                            }
+                        }
+                        else
+                        {
+                            <option value="0">Hệ thống chưa có Team nào</option>
+                        }
+                    
+                </select>
+
+
+                <select id="cbb-user-manger" class="form-control" style="display: none">
+
+                    @if (ViewBag.LoaiTK == 100)
+                    {
+                        <option value="@(ViewBag.Id)">@(ViewBag.UserName)</option>
+                    }
+                    else
+                    {
+                        if (ViewBag.lstUserManager != null)
+                        {
+                            <option value="0">-- Không chọn User Manager --</option>
+                            foreach (var item in ViewBag.lstUserManager)
+                            {
+                                <option value="@(item.Id)">@(item.UserName)</option>
+                            }
+                        }
+                        else
+                        {
+                            <option value="0">Hệ thống chưa có tài khoản có User Manager</option>
+                        }
+                    }
+
+                </select>
+                
+
+                <div style="display: none; margin-top: 10px" id="cboxcenter">
+
+                    @Html.Action("LoadComboboxCenter")
+
+                </div>
+
+
+                <div class="form-group">
+                    <p id="message" style="width: 100%; text-align: center;"></p>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <button id="btn-submit" class="btn btn-primary" type="button">Thêm mới</button>
+                        <button id="btn-cancel" class="btn btn-white" type="button">Quay lại</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    var isLead = 0;
+    var valueParent;
+    var idManager;
+
+    //function isEmpty(str){
+    //    return !str.replace(/\s+/, '').length;
+    //}
+
+    //document.getElementById("txt-phone").addEventListener("input", function() {
+    //    if( isEmpty(this.value) ) {
+    //        console.log("NAME IS EMPTY!");
+    //    }
+    //});
+
+  
+    $(function () {
+
+        $('input').iCheck({
+            checkboxClass: 'iradio_minimal-red',
+            radioClass: 'iradio_minimal-red'
+        });
+        BindButtonCancelClick();
+        BindButtonSubmitClick();
+        BindEventChoseRadioButton();
+        BindListCityToCombobox();
+    });
+
+    function BindListCityToCombobox() {
+        LoadPartialView('@Url.Action("LoadCityCombobox")', $("#lst-city"));
+    };
+  
+    function BindButtonCancelClick() {
+        $("#btn-cancel").click(function() {
+                LoadPartialView('@Url.Action("_ListAccount")', $("#content-container"));
+            }
+        );
+    };
+    function BindEventChoseRadioButton() {
+        var radioBonus = $('input[type="radio"]');
+
+        radioBonus.iCheck({
+            radioClass: 'iradio_minimal-red'
+        }).on('ifChecked',
+            function (event) {
+
+                var value = $(this).val();
+                console.log("test " + value);
+                if (value == 3) {
+                    $('#cboxcenter').css('display', 'block');
+                }
+                else {
+                    $('#cboxcenter').css('display', 'none');
+                }
+                
+                var name = $(this).attr("id");
+                // console.log(name);
+
+                if (value == "1") {
+  
+                    if (name == "isAccountTeamLead") {
+                        isLead = 1;
+                        $('#cbb-user-manger').css('display', 'block');
+                        $('#cbb-team-lead').css('display', 'none');
+                        $('#cbb-group-manger').css('display', 'none'); 
+
+                    } else {
+                        console.log(name);
+                        isLead = 0;
+                        $('#cbb-team-lead').css('display', 'none');   
+                        $('#cbb-group-manger').css('display', 'none'); 
+                    }
+                  
+                }
+                if (value == "4")
+                {                
+                    $('#cbb-team-lead').css('display', 'none');
+                    $('#cbb-user-manger').css('display', 'none');
+                    $('#cbb-group-manger').css('display', 'none'); 
+                    $('#txt-center-add').css('display', 'block');
+                    console.log("chon center");
+                    $('#cboxcenter').css('display', 'block');
+                    $('#txt-center-add').css('display', 'block');
+
+                } if (value == "100")
+                {
+                    $('#cbb-group-manger').css('display', 'none');
+                    $('#cbb-team-lead').css('display', 'none');
+                    $('#cbb-user-manger').css('display', 'none');
+                    $('#txt-center-add').css('display', 'none');
+                }
+
+                else {
+                    console.log(name + "--");
+
+                    isLead = 0;
+                    //$('#cbb-team-lead').css('display', 'block');                     
+                    //$('#cbb-user-manger').css('display', 'none');
+                    //$('#cbb-group-manger').css('display', 'block');   
+
+                    if (name == "isAccountUserManager") {
+
+                        $('#cbb-user-manger').css('display', 'none');
+                        $('#cboxcenter').css('display', 'none');
+
+                    } else if (name == "isAccountTeamLead") {
+
+                        $('#cbb-team-lead').css('display', 'none');
+                        $('#cbb-user-manger').css('display', 'block');
+                        $('#cbb-group-manger').css('display', 'block');
+
+                    } else if (name == "isAccountUser") {
+
+                        $('#cbb-group-manger').css('display', 'none');
+                        $('#cbb-user-manger').css('display', 'none');
+
+                    } else if (name == "isAccountBC") {
+
+                        $('#cbb-group-manger').css('display', 'none');
+                        $('#cbb-team-lead').css('display', 'block');
+                        $('#cbb-user-manger').css('display', 'none');
+                        $('#txt-center-add').css('display', 'block');
+                    }
+                    else if (name == "isAccountUserManager") {
+
+
+                        $('#cbb-group-manger').css('display', 'none');
+                        $('#cbb-team-lead').css('display', 'none');
+                        $('#cbb-user-manger').css('display', 'none');
+                        $('#txt-center-add').css('display', 'none');
+
+
+                    } else if (name == "isAccountImport") {
+
+                        console.log("name import");
+                        
+                       // $('#txt-center-add').css('display', 'block');
+                    }
+
+                   
+                }
+
+                console.log("islead:" + isLead);
+            });
+    };
+
+
+    function BindButtonSubmitClick() {
+
+        $("#btn-submit").click(function () {
+
+            var _source = $("#txt-source").find('option:selected').val();
+            var _teamname = $("#cbb-group-manger").find('option:selected').val();
+
+            // console.log(_source);
+
+                    if (typeof _source !== "undefined") {
+
+                        var objdata;
+                        if (isLead == 1) {
+
+                            valueParent = $("#cbb-user-manger").find('option:selected').val();
+                            console.log("islead = 1");
+
+                            objdata = {
+
+                                username: $("#txt-username").val(),
+                                password: $("#txt-password").val(),
+                                confirmPassword: $("#txt-confirm-password").val(),
+                                fullname: $("#txt-name").val(),
+                                birth: $("#txt-bird").val(),
+                                email: $("#txt-email").val(),
+                                phone: $("#txt-phone").val(),
+                                source: _source,
+                                LoaiTK: $("input[type='radio']:checked").val(),
+                                idParent: null,
+                                idCity: $("#cbb-city").find('option:selected').val(),
+                                idManager: valueParent,
+                                idCenter: $("#txt-center-add").find('option:selected').val(),
+                               
+                            }
+
+                        } else {
+
+                            console.log("islead = 0");
+                            valueParent = $("#cbb-team-lead").find('option:selected').val();
+                            idManager = $("#cbb-team-lead").find('option:selected').attr('data-key');
+
+                            objdata = {
+
+                                username: $("#txt-username").val(),
+                                password: $("#txt-password").val(),
+                                confirmPassword: $("#txt-confirm-password").val(),
+                                fullname: $("#txt-name").val(),
+                                birth: $("#txt-bird").val(),
+                                email: $("#txt-email").val(),
+                                phone: $("#txt-phone").val(),
+                                source: _source,
+                                LoaiTK: $("input[type='radio']:checked").val(),
+                                idParent: valueParent,
+                                idCity: $("#cbb-city").find('option:selected').val(),
+                                idManager: idManager,
+                                idCenter: $("#txt-center-add").find('option:selected').val(),
+                                teamname: _teamname
+                            }
+
+                        }
+
+                        if (@ViewBag.LoaiTK == 100 && idManager == 0) {
+
+                            $("#message").text("Tài khoản teamlead chưa được có user quản lý");
+
+                        } else {
+
+                            console.log(objdata);
+
+                            $.ajax({
+
+                                type: "GET",
+                                url: "/ManagerAccount/_AddAccount",
+                                data: objdata,
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                success: function (data) {
+
+                                    if (data.result.IsSuccess === true) {
+                                        $("#message").css("color", "darkcyan");
+                                        $("#message").text(data.result.Message);
+                                    } else {
+                                        $("#message").css("color", "red");
+                                        $("#message").text(data.result.Message);
+                                    }
+
+                                    if (@ViewBag.LoaiTK == 100 && idManager == 0) {
+
+                                        $("#message").text("Tài khoản teamlead chưa được có user quản lý");
+
+                                    }
+
+                                    console.log("team lead 254 : " + valueParent);
+                                },
+                                failure: function () {
+                                    alert("fail");
+                                }
+                            });
+
+                        }
+
+
+                    }
+                    else {
+
+                        $("#message").css("color", "red");
+                        $("#message").text("bạn chưa chọn source");
+                    }
+               
+            }
+        );
+    }
+
+
+</script>
+

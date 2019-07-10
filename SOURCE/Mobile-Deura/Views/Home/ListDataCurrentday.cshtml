@@ -1,0 +1,156 @@
+﻿@using Mobile_Deura.Untils
+@{
+    int count = 0;
+}
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Venesa</title>
+
+    <link href="/Content/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/Content/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="/Content/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="/Content/css/animate.css" rel="stylesheet">
+    <link href="/Content/css/style.css" rel="stylesheet">
+    <link href="/Content/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+    <script src="/Content/js/jquery-3.1.1.min.js"></script>
+</head>
+
+<body oncopy="return false" oncut="return false" onpaste="return false">
+
+    <div id="wrapper">
+        <div id="page-wrapper" class="gray-bg" style="margin-left: 0;">
+            <div class="row border-bottom">
+                <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                    <ul class="nav navbar-top-links navbar-right">
+                        <li>
+                            <a style="color: coral; margin-left: 20px;">
+                                Xin chào : @AccountUntils.GetEmp().UserName
+                            </a>
+                        </li>
+                        <li style="float: right;">
+                            <a href="/Login/Logout"> <i class="fa fa-sign-out"></i> Đăng xuất</a>
+                        </li>
+                    </ul>
+
+                </nav>
+            </div>
+            <div class="row wrapper border-bottom white-bg page-heading">
+                <div class="col-lg-10">
+                    <h2></h2>
+                    <ol class="breadcrumb">
+                        <li>
+                            <a href="/Home/Index"><i class="fa fa-home"></i> Home</a>
+                        </li>
+                        <li>
+                            <a href="/Home/ListDataCurrentday"><i class="fa fa-list"></i> Danh sách</a>
+                        </li>
+                        <li>
+                            <a href="/AccountInfo/ChangePassword"><i class="fa fa-key"></i> Đổi mật khẩu</a>
+                        </li>
+                    </ol>
+                </div>
+                <div class="col-lg-2">
+
+                </div>
+            </div>
+            <div class="wrapper wrapper-content animated fadeInRight">
+                <div class="row">
+                    <div class="col-lg-10">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <h5>Danh sách dữ liệu đã thêm trong ngày</h5>
+                            </div>
+                            <div class="ibox-title">
+                                <p>Thành công : @ViewBag.success</p>
+                                <p>Thất bại : @ViewBag.lstFalse</p>
+                            </div>
+                            <div class="ibox-content">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>
+                                                Tên
+                                            </th>
+                                            <th>
+                                                Trạng thái
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            <p style="display: none;">@(count++)</p>
+                                            <tr>
+
+                                                <td>@count</td>
+                                                <td>
+                                                    @item.name
+                                                    <table style="margin-top: 10px;">
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>
+                                                                    <b>Số điện thoại:</b>
+                                                                </td>
+                                                                <td>@item.mobile</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <b>Địa chỉ:</b>
+                                                                </td>
+                                                                <td>
+                                                                    @item.address
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <b>trung tâm:</b>
+                                                                </td>
+                                                                <td>
+                                                                    @item.center
+                                                                </td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <b>ghi chú:</b>
+                                                                </td>
+                                                                <td>
+                                                                    @item.note
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                                <td>
+                                                    
+                                                        @if(Convert.ToString(item.sent_log) == "False#FAIL")
+                                                        {
+                                                            @Html.Raw("Số điện thoại vi phạm điều kiện (đã có trên hệ thống,trùng demo...)");
+                                                        }
+                                                        else
+                                                        {
+                                                            @Html.Raw(item.sent_log);
+                                                        }
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/Content/js/bootstrap.min.js"></script>
+</body>
+
+</html>

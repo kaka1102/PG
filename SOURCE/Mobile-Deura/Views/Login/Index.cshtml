@@ -1,0 +1,76 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>PG - VENESA</title>
+
+    <link href="/Content/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/Content/font-awesome/css/font-awesome.css" rel="stylesheet">
+
+    <link href="/Content/css/animate.css" rel="stylesheet">
+    <link href="/Content/css/style.css" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg">
+<div class="middle-box text-center loginscreen animated fadeInDown">
+    <h3>Welcome to Venesa</h3>
+    <p>Đăng nhập hệ thống.</p>
+    <form class="m-t" role="form" action="index.html">
+        <div class="form-group">
+            <input id="txtusername" type="email" class="form-control" placeholder="Tên đăng nhập" required="">
+        </div>
+        <div class="form-group">
+            <input id="txtpassword" type="password" class="form-control" placeholder="Mật khẩu" required="">
+        </div>
+        <a id="btn-login" class="btn btn-primary block full-width m-b">Đăng nhập <img class="image" id="loader-img" src="/Scripts/colorbox/images/loading.gif" style="max-width: 100%; display: none;"></a>
+    </form>
+    <p id="login-form-err-mess" style="color: red;" class="m-t"> <small></small> </p>
+</div>
+
+<!-- Mainly scripts -->
+
+<script src="/Content/js/jquery-3.1.1.min.js"></script>
+<script src="/Content/js/bootstrap.min.js"></script>
+</body>
+
+<script>
+
+    $(function () {
+        BindButtonLoginClick();
+    });
+
+    function BindButtonLoginClick() {
+        $("#btn-login").click(function () {
+            var phone = $("#txtusername").val();
+            var password = $("#txtpassword").val();
+            var loader = $("#loader-img");
+            $.ajax({
+                type: "POST",
+                url: "/Login/CheckLogin",
+                data: '{ "username": "' + phone + '","password": "' + password + '"}',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    if (response.result.IsSuccess === true) {
+                        window.location.href = "/Home/Index";
+                    } else {
+                        $("#login-form-err-mess").find("small").text(response.result.Message);
+                    }
+                    loader.css("display", "none");
+                },
+                beforeSend: function () {
+                    loader.css("display", "inline-block");
+                },
+                failure: function (response) {
+                    alert("fail");
+                }
+            });
+        });
+    }
+</script>
+</html>

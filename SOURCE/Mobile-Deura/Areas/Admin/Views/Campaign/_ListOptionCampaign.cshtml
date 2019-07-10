@@ -1,0 +1,132 @@
+﻿@using Mobile_Deura.Const
+
+@{
+    var model = (List<ViewModelInListCampain>)Model;
+}
+
+<div class="table-responsive">
+    <table class="table table-striped table-bordered table-hover dataTables-example">
+        <thead>
+            <tr>
+                <th>Campaign Code</th>
+                <th>Tên Campaign</th>
+                <th>Kịch bản</th>
+                <th>Bắt đầu</th>
+                <th>Kết thúc</th>
+                <th>Thành Phố</th>
+                <th>Địa điểm triển khai</th>
+                <th>Số user tham gia</th>
+                <th @Html.Raw(ViewBag.TypeAccount == 1 ? "style='display:none'" : "")>Tùy chọn</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in model)
+            {
+                <tr>
+                    <td>@(item.CampaignCode)</td>
+                    <td>
+                        @(item.Name)
+                    </td>
+                    <td>
+
+                        @* @Html.Raw( SystemUntility.TruncString( Convert.ToString(item.Script) , 200))*@
+                        @SystemUntility.TruncString( Convert.ToString(item.Script) , 200)
+
+                    </td>
+                    <td>
+                        @(item.StartTime)
+                    </td>
+                    <td>
+                        @(item.EndTime)
+                    </td>
+                    
+                    <td>
+                        @(item.City_Name)
+                    </td>
+                    
+                    <td>
+                        @(item.Local_Name)
+                    </td>
+                    
+                    <td>
+
+                        @if (item.Type == 1)
+                        {
+                            @(item.numberUser)
+                        }
+                        else if(item.Type == 3)
+                        {
+                            @Html.Raw("Tự động")
+                        }
+                        else
+                        {
+
+                        }
+
+                    </td>
+
+                    <td @Html.Raw(ViewBag.TypeAccount == 1 ? "style='display:none'" : "")>
+
+                        <button type="button" class="fa fa-edit" data-id="@item.Id"  
+                                    @if (item.Type == 1) {
+                                       @Html.Raw("onclick = 'ButtonEditClick(this)'")
+                                    }
+                                    else if(item.Type == 2)
+                                    {
+                                       @Html.Raw("onclick = 'ButtonEditClick2(this)'")
+                                    }></button>
+
+                       <button type="button" class="fa fa-trash-o" data-id="@item.Id" onclick="ButtonDeleteClick(this)"> </button>
+
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
+<script>
+
+
+    $(function() {
+        $('.dataTables-example').DataTable({
+            pageLength: 25,
+            responsive: true,
+            dom: '<"html5buttons"B>lTfgitp',
+            buttons: [
+                //{ extend: 'copy' },
+                //{ extend: 'csv' },
+                //{ extend: 'excel', title: 'ExampleFile' },
+                //{ extend: 'pdf', title: 'ExampleFile' },
+                {
+                    // extend: 'print',
+                    customize: function(win) {
+                        $(win.document.body).addClass('white-bg');
+                        $(win.document.body).css('font-size', '10px');
+                        $(win.document.body).find('table')
+                            .addClass('compact')
+                            .css('font-size', 'inherit');
+                    }
+                }
+            ]
+
+        });
+    });
+
+    function ButtonEditClick(self) {
+        var id = $(self).attr("data-id");
+        LoadPartialView('/Admin/Campaign/EditOptionCampaign?id=' + id, $("#content-container"));
+    }
+
+    function ButtonEditClick2(self) {
+        var id = $(self).attr("data-id");
+        LoadPartialView('/Admin/Campaign/EditOptionCampaign2?id=' + id, $("#content-container"));
+    }
+
+    function ButtonDeleteClick(self) {
+
+        console.log("click delete campaign option");
+    }
+
+</script>

@@ -1,0 +1,284 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/jquery.validate.js"></script>
+
+<link href="~/Content/font-awesome/css/font-awesome.css" rel="stylesheet" />
+<style>
+    .loaderactive {
+        width: 100%;
+        position: absolute;
+        z-index: 10;
+        background-color: black;
+        opacity: 0.4;
+        height: 100%;
+        top: 0;
+    }
+</style>
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Dữ liệu import</h2>
+        <div id="ResultContent"></div>
+    </div>
+    <div class="col-lg-12">
+        <h2> </h2>
+        <div class="col-lg-12 icons-box">
+            <h2> </h2>
+
+            <div class="infont col-md-2">
+                <a href="DownloadFile?file=data_import.xls" target="_blank"><i class="fa fa-file-word-o" style="float: left; margin-right: 10px;"></i> Tải file import</a>
+
+            </div>
+            <div class="col-md-8"></div>
+            <div class="col-md-2">
+                <button id="btn-add" @Html.Raw(ViewBag.TypeAccount == 1 ? "style='display:none'" : "") class="btn btn-w-m btn-success" data-toggle="modal" data-target="#myModal5">Import Data</button>
+
+            </div>
+  
+            <div class="modal inmodal fade" id="myModal5" tabindex="-1" role="dialog" aria-hidden="true">
+
+                <form id="UploadForm" action="@Url.Action("Upload", "ImportData")" method="post" enctype="multipart/form-data">
+
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                <h4 class="modal-title">Import Dữ liệu</h4>
+                            </div>
+
+                            <div class="modal-body" style="height: 200px">
+
+                                <div class="form-group">
+                                    <label>Theo City</label><span style="color: red;">*</span>
+
+                                    @if (ViewBag.center != null)
+                                    {
+                                        <select id="txt-center" class="form-control" required>
+
+                                            <option value="0">-- Không chọn Team --</option>
+                                            @foreach (var item in ViewBag.center)
+                                            {
+                                                <option value="@(item.id)" data-key="@(item.EnglishName)">@(item.ShortName)</option>
+                                            }
+
+                                        </select>
+                                    }
+
+                                </div>
+
+                                <div class="form-group">
+
+                                    <label>Chọn campaign</label><span style="color: red;">*</span>
+
+                                    @if (ViewBag.campaign != null)
+                                    {
+                                        <select id="txt-campaign" class="form-control" required>
+                                            <option value="0">-- Không chọn campaing --</option>
+                                            @foreach (var item in ViewBag.campaign)
+                                            {
+                                                <option value="@(item.Id)" data-key="@(item.CampaignCode)">@(item.Name)</option>
+                                            }
+                                        </select>
+                                    }
+
+                                </div>
+
+
+                                <div class="form-group">
+
+                                    <div class="control-label col-md-2">Excel:</div>
+                                    <div class="col-md-10">
+                                        <input type="file" id="FileUpload" name="FileUpload" class="" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-md-offset-2 col-md-10" style="margin-top: 20px;">
+                                        <input type="submit" value="Upload" id="btnSubmit" class="btn btn-primary" />
+
+                                    </div>
+                                </div>
+
+                                <div id="smginfo"></div>
+
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+
+                @* end from *@
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <div class="ibox-tools">
+                    </div>
+                </div>
+                <div class="ibox-content">
+
+                    <div id="content-container2">
+
+
+                        <div class="dataTables_filter" style="margin-bottom: 20px;">
+                            <label>Search:<input id="txt-search" type="text" class="form-control input-sm" style="margin-bottom: 15px;"><button id="btn-search" class="btn btn-sm btn-primary pull-right m-t-n-xs" type="submit"><strong>Tìm kiếm</strong></button></label>
+                        </div>
+                        <div id="content-container">
+
+                            @Html.Action("_ListImportData")
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    var str_center;
+    var str_campaign;
+
+    $(function () {
+
+        BindInputSearchChange();
+        BindButtonAddClick();
+        BindUploadForm();
+    })
+
+
+    $('#txt-center').on('change', function () {
+        str_center = $("#txt-center").find('option:selected').attr('data-key');
+    });
+
+    $('#txt-campaign').on('change', function () {
+        str_campaign = $("#txt-campaign").find('option:selected').attr('data-key');
+    });
+
+
+   // $("#UploadForm").validate();
+
+    function BindUploadForm() {
+
+        $("#UploadForm").ajaxForm({
+            iframe: true,
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                $("#UploadForm").resetForm();
+                if (!result.Result) {
+
+                    console.log('#null : ' + result.Result);
+                }
+                else {
+
+                    $('#ResultContent').html(result.Msg);
+                    ImportData(result.Msg, str_center, str_campaign);
+                }
+            },
+            error: function (xhr, textStatus, errorThrown) {
+
+                $("#UploadForm").resetForm();
+
+            }
+        });
+
+    }
+
+
+    function ImportData(savedFileName, str_center, str_campaign ) {
+
+
+        $.ajax({
+            type: 'post',
+            url: '@Url.Action("Import", "ImportData")',
+            data: { savedFileName: savedFileName, center: str_center, campaign: str_campaign },
+            async: false,
+            cache: false,
+            dataType: 'json',
+            success: function (data) {
+                if (data.Msg) {
+                    $('#UploadModal').modal('hide');
+                }
+                else {
+                    $('#UploadModal').modal('hide');
+                    window.location.reload();
+                }
+            },
+            error: function () {
+
+                $('#UploadModal').modal('hide');
+            }
+        });
+
+    }
+
+    function BindButtonAddClick() {
+        @*$("#btn-add").click(function() {
+            LoadPartialView('@Url.Action("AddList")', $("#content-container2"));
+        });*@
+    }
+
+    function LoadPartialView(url, container) {
+        $.ajax({
+            url: url,
+            type: "GET",
+            dataType: "html",
+            success: function (data) {
+                container.html(data);
+            },
+            beforeSend: function () {
+                container.append($('<div class="loaderactive"><div id="loader"></div></div>'));
+            }
+        });
+    }
+
+    function LoadDataManager(page, searchKey) {
+
+        $.ajax({
+            url: '/Admin/ImportData/_ListImportData',
+            type: "GET",
+            data: {
+                page: page,
+                key:searchKey
+            },
+            dataType: "html",
+            success: function (data) {
+                $('#content-container').html(data);
+            },
+            beforeSend: function () {
+                $('#content-container').append($('<div class="loaderactive"><div id="loader"></div></div>'));
+            }
+        });
+
+    }
+
+    function BindInputSearchChange() {
+
+        $("#btn-search").click(function () {
+            var value = $("#txt-search").val();
+            LoadDataManager(1, value);
+        });
+
+    }
+</script>

@@ -1,0 +1,180 @@
+﻿@using Mobile_Deura.Const
+@{
+    //var model = (List<Data_Manager_PageList_Result>)Model;
+   
+    var model = (List<Data_Manager_PageList_By_TeamLead_Result>)Model;
+
+}
+<div class="table-responsive">
+    <table class="table table-striped table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Họ tên</th>
+                <th>Số điện thoại</th>
+                <th>Địa chỉ</th>
+                <th>Trung tâm</th>
+                <th>Ghi chú</th>
+                <th>Ngày tạo</th>
+                <th>Trạng thái</th>
+                <th>Tạo bởi</th>
+                <th>Chiến dịch</th>
+                <th>Source</th>
+                @*            <th>*@
+                @*                Tùy chọn*@
+                @*            </th>*@
+            </tr>
+        </thead>
+        <tbody>
+        
+       
+             @foreach (var item in model)
+             {
+                 <tr>
+                     <td>@(item.id)</td>
+                     <td>
+                         @(item.name)
+                     </td>
+                     <td>
+                         @(item.mobile)
+                     </td>
+                     <td>
+                         @(item.address)
+                     </td>
+                     <td>
+                         @(item.center)
+                     </td>
+                     <td>
+                         @(item.note)
+                     </td>
+                     <td>
+                         @(item.created_date)
+                     </td>
+                     <td>
+                         @(item.sent_log)
+                     </td>
+                     <td>
+                         @(item.created_by)
+                     </td>
+                     <td>
+
+                         @if (item.isCampaign == null || item.isCampaign == false)
+                         {
+
+                             <label style="color: burlywood">Không </label>
+
+                         }
+                         else
+                         {
+                             <label style="color: red">Có </label>
+                         }
+
+                     </td>
+                     <td>
+                         @(item.source)
+                     </td>
+
+                     @*                <td>*@
+                     @*                    <button type="button" class="fa fa-send-o" data-id="@item.id" onclick="BindButtonResendClick(this)" title="gửi lại"> </button>*@
+                     @*                </td>*@
+                 </tr>
+             }
+        
+       
+
+        </tbody>
+    </table>
+    <div class="dataTables_paginate paging_simple_numbers" id="product-page-list">
+        <ul class="pagination">
+            <li class="previous" id="btn_previous">
+                <a>Previous</a>
+            </li>
+            @if (ViewBag.pageSelected - 2 > 1)
+            {
+                <li class="paginate_button page-item" page-values="1">
+                    <a>1</a>
+                </li>
+                if (ViewBag.pageSelected - 3 > 1)
+                {
+                    <li class="paginate_button">
+                        <a>...</a>
+                    </li>
+                }
+
+            }
+            @for (int i = 1; i < ViewBag.totalPage; i++)
+            {
+                if (Math.Abs(ViewBag.pageSelected - i) <= 2)
+                {
+                    <li class="paginate_button page-item" page-values="@i">
+                        <a>@i</a>
+                    </li>
+                }
+            }
+            @if (ViewBag.totalPage - 3 > ViewBag.pageSelected)
+            {
+                <li class="paginate_button">
+                    <a>...</a>
+                </li>
+            }
+            <li class="paginate_button page-item" page-values="@ViewBag.totalPage">
+                <a>@ViewBag.totalPage</a>
+            </li>
+            <li class="next" id="btn_next">
+                <a>Next</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<script>
+    $(function () {
+        BindButtonProductPageListClick();
+    });
+    function BindButtonProductPageListClick() {
+        $("#btn_previous").click(function() {
+            if (1 < @ViewBag.pageSelected) {
+                LoadDataManager("@(ViewBag.pageSelected-1)", $("#txt-search").val());
+            }
+        });
+        $("#btn_next").click(function() {
+            if (@ViewBag.pageSelected < @ViewBag.totalPage) {
+                LoadDataManager("@(ViewBag.pageSelected+1)", $("#txt-search").val());
+            }
+        });
+        $(".page-item").click(function() {
+            LoadDataManager($(this).attr("page-values"), $("#txt-search").val());
+        });
+    }
+
+    function BindButtonResendClick(self) {
+        var id = $(self).attr("data-id");
+        $.ajax({
+            type: "GET",
+            url: "/ADMIN/DataManager/ResendData",
+            data: { id: id },
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                BootstrapDialog.alert(
+                    {
+                        title: 'THÔNG BÁO',
+                        type: BootstrapDialog.TYPE_SUCCESS,
+                        message: data.result.Message,
+                        callback: function() {
+                            LoadPartialView('@Url.Action("_ListDataManager")', $("#content-container"));
+                        }
+                    }
+                );
+            },
+            complete: function () {
+                $("#loadding-wraper").css("display", "none");
+            },
+            beforeSend: function () {
+                $("#loadding-wraper").css("display", "block");
+            },
+            failure: function () {
+                alert("fail");
+            }
+        });
+    }
+</script>
